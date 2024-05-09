@@ -1,15 +1,17 @@
 import java.util.Objects;
 
 public class Task {
-    private final String name;
-    private final String description;
+    private String name;
+    private String description;
     private final int id;
     private TaskStatus taskStatus;
 
-    public Task(String name, String description, int id) {
+    protected String taskType = "Task";
+
+    public Task(String name, String description) {
         this.name = name;
         this.description = description;
-        this.id = id;
+        this.id = TaskManager.idGenerator();
         this.taskStatus = TaskStatus.NEW;
     }
 
@@ -29,8 +31,20 @@ public class Task {
         return taskStatus;
     }
 
+    public String getTaskType() {
+        return taskType;
+    }
+
     public void setTaskStatus(TaskStatus taskStatus) {
         this.taskStatus = taskStatus;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -45,4 +59,14 @@ public class Task {
         return this.id == ((Task) o).getId();
     }
 
+    @Override
+    public String toString() {
+        return "Task{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", id=" + id +
+                ", taskStatus=" + taskStatus +
+                ", taskType='" + taskType + '\'' +
+                '}';
+    }
 }
