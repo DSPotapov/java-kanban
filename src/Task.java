@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Task {
     private final String name;
     private final String description;
@@ -30,4 +32,17 @@ public class Task {
     public void setTaskStatus(TaskStatus taskStatus) {
         this.taskStatus = taskStatus;
     }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hash(name, description, id, taskStatus);
+    }
+
+    @Override
+    public final boolean equals(Object o){
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        return this.id == ((Task) o).getId();
+    }
+
 }
