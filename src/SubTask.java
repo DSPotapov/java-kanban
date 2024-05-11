@@ -1,4 +1,4 @@
-public class SubTask extends Epic {
+public class SubTask extends Task {
 
     private int epicId;
 
@@ -12,4 +12,15 @@ public class SubTask extends Epic {
         return epicId;
     }
 
+    @Override
+    public String toString() {
+        return "Task{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", id=" + id +
+                ", taskStatus='" + taskStatus + '\'' +
+                ", taskType='" + taskType + '\'' +
+                ", epicId=" + epicId +
+                "}";
+    }
 }
