@@ -11,7 +11,7 @@ public class Task {
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
-        this.id = TaskManager.idGenerator();
+        this.id = InMemoryTaskManager.idGenerator();
         this.taskStatus = TaskStatus.NEW;
     }
 
