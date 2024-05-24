@@ -11,30 +11,48 @@ public class InMemoryTaskManager implements TaskManager {
 
     private HistoryManager historyManager = Managers.getDefaultHistory();
 
-    public static int idGenerator() {
+    public int idGenerator() {
         return taskId++;
     }
 
     @Override
-    public void createTask(Task newTask) {
-        tasks.put(newTask.getId(), newTask);
+    public int addNewTask(Task newTask) {
+        if (newTask == null) {
+            System.out.println("Ошибка, задачи не существует");
+            return -1;
+        }
+        int id = newTask.getId();
+        tasks.put(id, newTask);
+        return id;
     }
 
     @Override
-    public void createSubTask(SubTask newSubTask) {
-        subTasks.put(newSubTask.getId(), newSubTask);
+    public int addNewSubTask(SubTask newSubTask) {
+        if (newSubTask == null) {
+            System.out.println("Ошибка, задачи не существует");
+            return -1;
+        }
+
+        int id = newSubTask.getId();
+        subTasks.put(id, newSubTask);
         Epic epic = epics.get(newSubTask.getEpicId());
-        epic.addSubTaskId(newSubTask.getId());
+        epic.addSubTaskId(id);
         if (TaskStatus.DONE.equals(epic.getTaskStatus())) {
             epic.setTaskStatus(TaskStatus.NEW);
         }
-        epics.get(newSubTask.getEpicId()).addSubTaskId(newSubTask.getId());
-
+        epics.get(newSubTask.getEpicId()).addSubTaskId(id);
+        return id;
     }
 
     @Override
-    public void createEpic(Epic newEpic) {
-        epics.put(newEpic.getId(), newEpic);
+    public int addNewEpic(Epic newEpic) {
+        if (newEpic == null) {
+            System.out.println("Ошибка, задачи не существует");
+            return -1;
+        }
+        int id = newEpic.getId();
+        epics.put(id, newEpic);
+        return id;
     }
 
     @Override
@@ -98,11 +116,11 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void printTasks() {
-        System.out.println("РЎРїРёСЃРѕРє Р·Р°РґР°С‡:");
+        System.out.println("Список задач:");
         System.out.println(getTasks());
-        System.out.println("РЎРїРёСЃРѕРє СЌРїРёРєРѕРІ:");
+        System.out.println("Список эпиков:");
         System.out.println(getEpics());
-        System.out.println("РЎРїРёСЃРѕРє РїРѕРґР·Р°РґР°С‡:");
+        System.out.println("Список подзадач:");
         System.out.println(getSubTasks());
         System.out.println();
     }

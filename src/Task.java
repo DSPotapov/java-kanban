@@ -8,10 +8,10 @@ public class Task {
 
     protected String taskType = "Task";
 
-    public Task(String name, String description) {
+    public Task(String name, String description, int id) {
         this.name = name;
         this.description = description;
-        this.id = InMemoryTaskManager.idGenerator();
+        this.id = id;
         this.taskStatus = TaskStatus.NEW;
     }
 

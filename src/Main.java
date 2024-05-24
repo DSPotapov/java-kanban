@@ -3,17 +3,17 @@ public class Main {
     public static void main(String[] args) {
         TaskManager manager = Managers.getDefault();
 
-        manager.createTask(new Task("Задача 1", "Выполнить задачу 1"));
-        manager.createTask(new Task("Задача 2", "Выполнить задачу 2"));
+        manager.addNewTask(new Task("Задача 1", "Выполнить задачу 1", manager.idGenerator()));
+        manager.addNewTask(new Task("Задача 2", "Выполнить задачу 2", manager.idGenerator()));
 
-        Epic epic = new Epic("Эпик 1", "Выполнить эпик 1");
-        manager.createEpic(epic);
-        manager.createSubTask(new SubTask("Сабтаска 1 эпик 1", "выполнить сабтаску 1 эпика 1", epic.getId()));
-        manager.createSubTask(new SubTask("Сабтаска 2 эпик 1", "выполнить сабтаску 2 эпика 1", epic.getId()));
+        Epic epic = new Epic("Эпик 1", "Выполнить эпик 1", manager.idGenerator());
+        manager.addNewEpic(epic);
+        manager.addNewSubTask(new SubTask("Сабтаска 1 эпик 1", "выполнить сабтаску 1 эпика 1", manager.idGenerator(), epic.getId()));
+        manager.addNewSubTask(new SubTask("Сабтаска 2 эпик 1", "выполнить сабтаску 2 эпика 1", manager.idGenerator(), epic.getId()));
 
-        epic = new Epic("Эпик 2", "Выполнить эпик 2");
-        manager.createEpic(epic);
-        manager.createSubTask(new SubTask("Сабтаска 1 эпик 2", "выполнить сабтаску 1 эпика 2", epic.getId()));
+        epic = new Epic("Эпик 2", "Выполнить эпик 2", manager.idGenerator());
+        manager.addNewEpic(epic);
+        manager.addNewSubTask(new SubTask("Сабтаска 1 эпик 2", "выполнить сабтаску 1 эпика 2", manager.idGenerator(), epic.getId()));
 
         System.out.println("1");
         printAllTasks(manager);
