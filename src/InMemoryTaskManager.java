@@ -32,7 +32,6 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println("Ошибка, задачи не существует");
             return -1;
         }
-
         int id = newSubTask.getId();
         subTasks.put(id, newSubTask);
         Epic epic = epics.get(newSubTask.getEpicId());
@@ -41,6 +40,7 @@ public class InMemoryTaskManager implements TaskManager {
             epic.setTaskStatus(TaskStatus.NEW);
         }
         epics.get(newSubTask.getEpicId()).addSubTaskId(id);
+
         return id;
     }
 
@@ -153,21 +153,27 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTaskById(int id) {
         Task task = tasks.getOrDefault(id, null);
-        historyManager.add(task);
+        if (task != null) {
+            historyManager.add(task);
+        }
         return task;
     }
 
     @Override
     public SubTask getSubTaskById(int id) {
         SubTask task = subTasks.getOrDefault(id, null);
-        historyManager.add(task);
+        if (task != null) {
+            historyManager.add(task);
+        }
         return task;
     }
 
     @Override
     public Epic getEpicById(int id) {
         Epic task = epics.getOrDefault(id, null);
-        historyManager.add(task);
+        if (task != null) {
+            historyManager.add(task);
+        }
         return task;
     }
 

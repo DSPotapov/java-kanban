@@ -3,6 +3,7 @@ import java.util.List;
 
 public interface TaskManager {
     int idGenerator();
+
     int addNewTask(Task newTask);
 
     int addNewSubTask(SubTask newSubTask);

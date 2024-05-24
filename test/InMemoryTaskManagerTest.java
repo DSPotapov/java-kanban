@@ -10,7 +10,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     void addNewTask() {
-        Task task = new Task("Test addNewTask", "Test addNewTask description", 1);
+        Task task = new Task("Test addNewTask", "Test addNewTask description", taskManager.idGenerator());
         final int taskId = taskManager.addNewTask(task);
         final Task savedTask = taskManager.getTaskById(taskId);
 
@@ -25,9 +25,44 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void shouldNotAddEpicAsSubTask() {
-        Epic epic = new Epic("Epic for test 1", "Testing of epic 1", taskManager.idGenerator());
-        assertEquals(-1, taskManager.);
+    void addNewSubTask() {
+        Epic epic = new Epic(
+                "Test addNewEpic",
+                "Test addNewEpic description",
+                taskManager.idGenerator());
+        taskManager.addNewEpic(epic);
+        SubTask subTask = new SubTask(
+                "Test addNewSubTask",
+                "Test addNewSubTask description",
+                taskManager.idGenerator(),
+                epic.getId());
+        final int taskId = taskManager.addNewSubTask(subTask);
+        final Task savedTask = taskManager.getSubTaskById(taskId);
+
+        assertNotNull(savedTask, "Задача не найдена.");
+        assertEquals(subTask, savedTask, "Задачи не совпадают.");
+
+        final List<SubTask> subTasks = taskManager.getSubTasks();
+
+        assertNotNull(subTasks, "Задачи не возвращаются.");
+        assertEquals(1, subTasks.size(), "Неверное количество задач.");
+        assertEquals(subTask, subTasks.get(0), "Задачи не совпадают.");
+    }
+
+    @Test
+    void addNewEpic() {
+        Epic epic = new Epic("Test addNewEpic", "Test addNewEpic description", taskManager.idGenerator());
+        final int taskId = taskManager.addNewEpic(epic);
+        final Epic savedTask = taskManager.getEpicById(taskId);
+
+        assertNotNull(savedTask, "Задача не найдена.");
+        assertEquals(epic, savedTask, "Задачи не совпадают.");
+
+        final List<Epic> epics = taskManager.getEpics();
+
+        assertNotNull(epics, "Задачи не возвращаются.");
+        assertEquals(1, epics.size(), "Неверное количество задач.");
+        assertEquals(epic, epics.get(0), "Задачи не совпадают.");
     }
 
     @Test
@@ -44,4 +79,5 @@ class InMemoryTaskManagerTest {
     public void epicShouldNotBeNull() {
         assertEquals(-1, taskManager.addNewEpic(null), "Пустая задача не может быть добавлена");
     }
+
 }
