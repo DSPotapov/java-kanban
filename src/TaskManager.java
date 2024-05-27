@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
-    int idGenerator();
 
     int addNewTask(Task newTask);
 
@@ -22,13 +21,13 @@ public interface TaskManager {
 
     void printTasks();
 
-    ArrayList<SubTask> getSubTasks();
+    List<SubTask> getSubTasks();
 
-    ArrayList<Epic> getEpics();
+    List<Epic> getEpics();
 
-    ArrayList<Task> getTasks();
+    List<Task> getTasks();
 
-    ArrayList<SubTask> getEpicSubTasks(int epicId);
+    List<SubTask> getEpicSubTasks(int epicId);
 
     Task getTaskById(int id);
 

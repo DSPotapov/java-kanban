@@ -10,7 +10,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     void addNewTask() {
-        Task task = new Task("Test addNewTask", "Test addNewTask description", taskManager.idGenerator());
+        Task task = new Task("Test addNewTask", "Test addNewTask description");
         final int taskId = taskManager.addNewTask(task);
         final Task savedTask = taskManager.getTaskById(taskId);
 
@@ -28,13 +28,11 @@ class InMemoryTaskManagerTest {
     void addNewSubTask() {
         Epic epic = new Epic(
                 "Test addNewEpic",
-                "Test addNewEpic description",
-                taskManager.idGenerator());
+                "Test addNewEpic description");
         taskManager.addNewEpic(epic);
         SubTask subTask = new SubTask(
                 "Test addNewSubTask",
                 "Test addNewSubTask description",
-                taskManager.idGenerator(),
                 epic.getId());
         final int taskId = taskManager.addNewSubTask(subTask);
         final Task savedTask = taskManager.getSubTaskById(taskId);
@@ -51,7 +49,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     void addNewEpic() {
-        Epic epic = new Epic("Test addNewEpic", "Test addNewEpic description", taskManager.idGenerator());
+        Epic epic = new Epic("Test addNewEpic", "Test addNewEpic description");
         final int taskId = taskManager.addNewEpic(epic);
         final Epic savedTask = taskManager.getEpicById(taskId);
 

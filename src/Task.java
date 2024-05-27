@@ -3,7 +3,7 @@ import java.util.Objects;
 public class Task {
     protected String name;
     protected String description;
-    protected final int id;
+    protected int id;
     protected TaskStatus taskStatus;
 
     protected String taskType = "Task";
@@ -12,6 +12,12 @@ public class Task {
         this.name = name;
         this.description = description;
         this.id = id;
+        this.taskStatus = TaskStatus.NEW;
+    }
+
+    public Task(String name, String description) {
+        this.name = name;
+        this.description = description;
         this.taskStatus = TaskStatus.NEW;
     }
 
@@ -25,6 +31,10 @@ public class Task {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public TaskStatus getTaskStatus() {
@@ -53,7 +63,7 @@ public class Task {
     }
 
     @Override
-    public final boolean equals(Object o){
+    public final boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         return this.id == ((Task) o).getId();
