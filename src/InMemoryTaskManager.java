@@ -73,7 +73,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     private void checkoutEpicStatus(int epicId) {
         Epic epic = epics.get(epicId);
-        ArrayList<Integer> ids = epic.getSubTaskIds();
+        List<Integer> ids = epic.getSubTaskIds();
         boolean isDone = true;
         for (int id : ids) {
             TaskStatus subTaskStatus = subTasks.get(id).getTaskStatus();
@@ -111,7 +111,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteEpic(int epicId) {
         Epic epic = epics.get(epicId);
-        ArrayList<Integer> ids = epic.getSubTaskIds();
+        List<Integer> ids = epic.getSubTaskIds();
         for (int id : ids) {
             subTasks.remove(id);
         }

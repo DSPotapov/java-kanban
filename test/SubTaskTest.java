@@ -3,7 +3,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SubTaskTest {
-    Epic epic = new Epic("Epic for test 1", "Testing epic 1", 0);
+    Epic epic = new Epic("Epic for test 1", "Testing epic 1");
 
     @Test
     public void subTasksShouldBeEquals() {

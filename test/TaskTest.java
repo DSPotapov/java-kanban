@@ -9,4 +9,17 @@ public class TaskTest {
         Task task2 = new Task("Task for test 2", "Testing task 2", 1);
         assertEquals(task1, task2, "Задачи разные");
     }
+
+    @Test
+    public void setTaskStatus(){
+        Task task = new Task("Task for test 1", "Testing task");
+        task.setTaskStatus(TaskStatus.IN_PROGRESS);
+        assertEquals(TaskStatus.IN_PROGRESS, task.getTaskStatus(), "Статус не совпадает");
+    }
+
+    @Test
+    public void getTaskType(){
+        Task task = new Task("Task for test 1", "Testing task");
+        assertEquals("Task", task.getTaskType());
+    }
 }
