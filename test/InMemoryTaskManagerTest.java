@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class InMemoryTaskManagerTest {
 
@@ -48,7 +49,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void addNewEpic() {
+    public void addNewEpic() {
         Epic epic = new Epic("Test addNewEpic", "Test addNewEpic description");
         final int taskId = taskManager.addNewEpic(epic);
         final Epic savedTask = taskManager.getEpicById(taskId);
@@ -61,6 +62,19 @@ class InMemoryTaskManagerTest {
         assertNotNull(epics, "Задачи не возвращаются.");
         assertEquals(1, epics.size(), "Неверное количество задач.");
         assertEquals(epic, epics.get(0), "Задачи не совпадают.");
+    }
+
+    @Test
+    public void updateTask(){
+        Task task = new Task("task for updateTaskTest", "testing task for updateTaskTest");
+        taskManager.addNewTask(task);
+        int id = task.getId();
+        task.setDescription("new description of the task");
+        task.setName("new name of the task");
+        taskManager.updateTask(task);
+        task = taskManager.getTaskById(id);
+        assertEquals(task.getDescription(),"new description of the task");
+        assertEquals(task.getName(),"new name of the task");
     }
 
     @Test
