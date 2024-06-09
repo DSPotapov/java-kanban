@@ -1,21 +1,34 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    private List<Task> history = new ArrayList<>();
+    private Map<Integer, Node> history = new HashMap<>();
 
     @Override
     public void add(Task task) {
         if (task == null) return;
-        if (history.size() > 9){
-            history.remove(0);
-        }
-        history.add(task);
+        int id = task.getId();
+        remove(id);
+        history.put(id, new Node(task));
     }
 
     @Override
+    public void remove(int id) {
+        history.remove(id);
+    }
+
+    /**
+     * –еализаци€ метода getHistory должна перекладывать задачи из св€зного списка в ArrayList дл€ формировани€ ответа.
+     */
+    @Override
     public List<Task> getHistory() {
-        return history;
+        List<Task> historyList = new ArrayList<>();
+        for (Node node : history.values()){
+            historyList.add(node.getValue());
+        }
+        return historyList;
     }
 }
