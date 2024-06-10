@@ -1,3 +1,5 @@
+package components;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -6,12 +8,12 @@ public class Epic extends Task {
 
     public Epic(String name, String description, int id) {
         super(name, description, id);
-        this.taskType = "Epic";
+        this.taskType = "components.Epic";
     }
 
     public Epic(String name, String description) {
         super(name, description);
-        this.taskType = "Epic";
+        this.taskType = "components.Epic";
     }
 
     public void addSubTaskId(int subTaskId){

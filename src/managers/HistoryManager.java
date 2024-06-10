@@ -1,3 +1,7 @@
+package managers;
+
+import components.Task;
+
 import java.util.List;
 
 public interface HistoryManager {

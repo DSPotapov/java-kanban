@@ -1,3 +1,7 @@
+package components;
+
+import components.Task;
+
 public class SubTask extends Task {
 
     private int epicId;
@@ -5,13 +9,13 @@ public class SubTask extends Task {
     public SubTask(String name, String description, int id, int epicId) {
         super(name, description, id);
         this.epicId = epicId;
-        this.taskType = "SubTask";
+        this.taskType = "components.SubTask";
     }
 
     public SubTask(String name, String description, int epicId) {
         super(name, description);
         this.epicId = epicId;
-        this.taskType = "SubTask";
+        this.taskType = "components.SubTask";
     }
 
     public int getEpicId() {
@@ -20,7 +24,7 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "components.Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", id=" + id +

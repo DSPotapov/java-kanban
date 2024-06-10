@@ -1,3 +1,6 @@
+import components.Task;
+import managers.HistoryManager;
+import managers.Managers;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -6,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
     private HistoryManager historyManager = Managers.getDefaultHistory();
-    private Task task = new Task("Task for test", "Task testing", 1);
+    private Task task = new Task("components.Task for test", "components.Task testing", 1);
 
     @Test
     void add() {

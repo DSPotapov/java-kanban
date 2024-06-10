@@ -1,3 +1,9 @@
+package managers;
+
+import managers.HistoryManager;
+import managers.InMemoryHistoryManager;
+import managers.InMemoryTaskManager;
+
 /*
 утилитарный класс
  */

@@ -1,3 +1,5 @@
+package components;
+
 import java.util.Objects;
 
 public class Task {
@@ -6,7 +8,7 @@ public class Task {
     protected int id;
     protected TaskStatus taskStatus;
 
-    protected String taskType = "Task";
+    protected String taskType = "components.Task";
 
     public Task(String name, String description, int id) {
         this.name = name;
@@ -71,7 +73,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "components.Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", id=" + id +

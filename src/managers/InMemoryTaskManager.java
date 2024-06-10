@@ -1,3 +1,11 @@
+package managers;
+
+import components.Epic;
+import components.SubTask;
+import components.Task;
+import components.TaskStatus;
+import managers.HistoryManager;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
