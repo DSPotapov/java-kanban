@@ -24,13 +24,13 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return "components.Task{" +
+        return "Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", id=" + id +
                 ", taskStatus='" + taskStatus + '\'' +
                 ", taskType='" + taskType + '\'' +
                 ", epicId=" + epicId +
-                "}";
+                "}\n";
     }
 }

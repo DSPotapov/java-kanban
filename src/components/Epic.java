@@ -8,7 +8,7 @@ public class Epic extends Task {
 
     public Epic(String name, String description, int id) {
         super(name, description, id);
-        this.taskType = "components.Epic";
+        this.taskType = "Epic";
     }
 
     public Epic(String name, String description) {
