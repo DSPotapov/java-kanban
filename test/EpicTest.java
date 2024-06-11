@@ -13,4 +13,10 @@ class EpicTest {
         Epic epic2 = new Epic("components.Epic for test 2", "Testing epic 2", 1);
         assertEquals(epic1, epic2, "Ёпики разные");
     }
+
+    @Test
+    public void deleteSubTask(){
+        Epic epic = new Epic ("Epic for test", "Test epic");
+
+    }
 }

@@ -15,7 +15,7 @@ class InMemoryTaskManagerTest {
     private TaskManager taskManager = Managers.getDefault();
 
     @Test
-    void addNewTask() {
+    void addNewTaskTest() {
         Task task = new Task("Test addNewTask", "Test addNewTask description");
         final int taskId = taskManager.addNewTask(task);
         final Task savedTask = taskManager.getTaskById(taskId);
@@ -31,7 +31,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void addNewSubTask() {
+    void addNewSubTaskTest() {
         Epic epic = new Epic(
                 "Test addNewEpic",
                 "Test addNewEpic description");
@@ -54,7 +54,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void addNewEpic() {
+    public void addNewEpicTest() {
         Epic epic = new Epic("Test addNewEpic", "Test addNewEpic description");
         final int taskId = taskManager.addNewEpic(epic);
         final Epic savedTask = taskManager.getEpicById(taskId);
@@ -70,7 +70,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void updateTask(){
+    public void updateTaskTest(){
         Task task = new Task("task for updateTaskTest", "testing task for updateTaskTest");
         taskManager.addNewTask(task);
         int id = task.getId();
@@ -95,6 +95,18 @@ class InMemoryTaskManagerTest {
     @Test
     public void epicShouldNotBeNull() {
         assertEquals(-1, taskManager.addNewEpic(null), "Пустая задача не может быть добавлена");
+    }
+
+    @Test
+    public void shouldAddAndDeleteSubTask(){
+        Epic epic = new Epic("epic for test", "testing epic");
+        taskManager.addNewEpic(epic);
+        SubTask subTask = new SubTask("subtask for epic", "testing subtask", epic.getId());
+        taskManager.addNewSubTask(subTask);
+        int id = subTask.getId();
+        assertTrue(epic.isSubTaskId(id));
+        taskManager.deleteSubTask(id);
+        assertFalse(epic.isSubTaskId(id));
     }
 
 }

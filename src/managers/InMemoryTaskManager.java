@@ -50,8 +50,6 @@ public class InMemoryTaskManager implements TaskManager {
         if (TaskStatus.DONE.equals(epic.getTaskStatus())) {
             epic.setTaskStatus(TaskStatus.NEW);
         }
-        epics.get(newSubTask.getEpicId()).addSubTaskId(id);
-
         return id;
     }
 
@@ -102,6 +100,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteTask(int taskId) {
         tasks.remove(taskId);
+        historyManager.remove(taskId);
     }
 
     @Override
@@ -114,6 +113,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (epic.getSubTaskIds().isEmpty()) {
             epic.setTaskStatus(TaskStatus.NEW);
         }
+        historyManager.remove(subTaskId);
     }
 
     @Override
@@ -124,6 +124,7 @@ public class InMemoryTaskManager implements TaskManager {
             subTasks.remove(id);
         }
         epics.remove(epicId);
+        historyManager.remove(epicId);
     }
 
     @Override

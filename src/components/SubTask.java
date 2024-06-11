@@ -9,13 +9,13 @@ public class SubTask extends Task {
     public SubTask(String name, String description, int id, int epicId) {
         super(name, description, id);
         this.epicId = epicId;
-        this.taskType = "components.SubTask";
+        this.taskType = "SubTask";
     }
 
     public SubTask(String name, String description, int epicId) {
         super(name, description);
         this.epicId = epicId;
-        this.taskType = "components.SubTask";
+        this.taskType = "SubTask";
     }
 
     public int getEpicId() {

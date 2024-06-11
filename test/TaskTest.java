@@ -22,6 +22,6 @@ public class TaskTest {
     @Test
     public void getTaskType(){
         Task task = new Task("components.Task for test 1", "Testing task");
-        assertEquals("components.Task", task.getTaskType());
+        assertEquals("Task", task.getTaskType());
     }
 }

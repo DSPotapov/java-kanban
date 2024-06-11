@@ -8,7 +8,7 @@ public class Task {
     protected int id;
     protected TaskStatus taskStatus;
 
-    protected String taskType = "components.Task";
+    protected String taskType = "Task";
 
     public Task(String name, String description, int id) {
         this.name = name;

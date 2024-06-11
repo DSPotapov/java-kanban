@@ -8,12 +8,12 @@ public class Epic extends Task {
 
     public Epic(String name, String description, int id) {
         super(name, description, id);
-        this.taskType = "components.Epic";
+        this.taskType = "Epic";
     }
 
     public Epic(String name, String description) {
         super(name, description);
-        this.taskType = "components.Epic";
+        this.taskType = "Epic";
     }
 
     public void addSubTaskId(int subTaskId){
@@ -21,10 +21,14 @@ public class Epic extends Task {
     }
 
     public void deleteSubTaskId(int subTaskId){
-        subTaskIds.remove(subTaskId);
+        subTaskIds.remove((Integer)subTaskId);
     }
 
     public List<Integer> getSubTaskIds() {
         return subTaskIds;
+    }
+
+    public boolean isSubTaskId(int id){
+        return subTaskIds.contains((Integer) id);
     }
 }
