@@ -27,7 +27,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int addNewTask(Task newTask) {
         if (newTask == null) {
-            System.out.println("Ошибка, задачи не существует");
+            System.out.println("РћС€РёР±РєР°, Р·Р°РґР°С‡Рё РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚");
             return -1;
         }
         int id = idGenerator();
@@ -39,7 +39,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int addNewSubTask(SubTask newSubTask) {
         if (newSubTask == null) {
-            System.out.println("Ошибка, задачи не существует");
+            System.out.println("РћС€РёР±РєР°, Р·Р°РґР°С‡Рё РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚");
             return -1;
         }
         int id = idGenerator();
@@ -56,7 +56,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int addNewEpic(Epic newEpic) {
         if (newEpic == null) {
-            System.out.println("Ошибка, задачи не существует");
+            System.out.println("РћС€РёР±РєР°, Р·Р°РґР°С‡Рё РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚");
             return -1;
         }
         int id = idGenerator();
@@ -129,11 +129,11 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void printTasks() {
-        System.out.println("Список задач:");
+        System.out.println("РЎРїРёСЃРѕРє Р·Р°РґР°С‡:");
         System.out.println(getTasks());
-        System.out.println("Список эпиков:");
+        System.out.println("РЎРїРёСЃРѕРє СЌРїРёРєРѕРІ:");
         System.out.println(getEpics());
-        System.out.println("Список подзадач:");
+        System.out.println("РЎРїРёСЃРѕРє РїРѕРґР·Р°РґР°С‡:");
         System.out.println(getSubTasks());
         System.out.println();
     }
