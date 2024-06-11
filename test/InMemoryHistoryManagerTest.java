@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
     private HistoryManager historyManager = Managers.getDefaultHistory();
-//    private Task task = new Task("components.Task for test", "components.Task testing", 1);
 
     @BeforeEach
     public void clearHistory() {
@@ -22,8 +21,8 @@ class InMemoryHistoryManagerTest {
         Task task = new Task("components.Task for test", "components.Task testing", 1);
         historyManager.add(task);
         final List<Task> history = historyManager.getHistory();
-        assertNotNull(history, "������� �� ������.");
-        assertEquals(1, history.size(), "������� �� ������.");
+        assertNotNull(history, "history is empty");
+        assertEquals(1, history.size());
     }
 
     @Test
@@ -32,7 +31,7 @@ class InMemoryHistoryManagerTest {
         Task task1 = new Task("components.Task1 for test", "components.Task1 testing", 2);
         historyManager.add(task);
         historyManager.add(task1);
-        assertEquals(historyManager.getLast(), task1, "��������� ���������� ������ �� ��������� � ��������� � �������");
+        assertEquals(historyManager.getLast(), task1, "couldn't get tail in history");
     }
 
     @Test
