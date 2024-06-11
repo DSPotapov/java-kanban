@@ -88,17 +88,17 @@ public class InMemoryHistoryManager implements HistoryManager {
         return getTasks();
     }
 
-    public Task getFirst(){
+    public Task getFirst() {
         if (head == null) return null;
         return head.getValue();
     }
 
-    public Task getLast(){
+    public Task getLast() {
         if (tail == null) return null;
         return tail.getValue();
     }
 
-    public void clearHistory(){
+    public void clearHistory() {
         history.clear();
     }
 }
