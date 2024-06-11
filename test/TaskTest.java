@@ -9,14 +9,14 @@ public class TaskTest {
     public void tasksShouldBeEquals(){
         Task task1 = new Task("components.Task for test 1", "Testing task 1", 1);
         Task task2 = new Task("components.Task for test 2", "Testing task 2", 1);
-        assertEquals(task1, task2, "Задачи разные");
+        assertEquals(task1, task2, "Р—Р°РґР°С‡Рё СЂР°Р·РЅС‹Рµ");
     }
 
     @Test
     public void setTaskStatus(){
         Task task = new Task("components.Task for test 1", "Testing task");
         task.setTaskStatus(TaskStatus.IN_PROGRESS);
-        assertEquals(TaskStatus.IN_PROGRESS, task.getTaskStatus(), "Статус не совпадает");
+        assertEquals(TaskStatus.IN_PROGRESS, task.getTaskStatus(), "РЎС‚Р°С‚СѓСЃ РЅРµ СЃРѕРІРїР°РґР°РµС‚");
     }
 
     @Test
