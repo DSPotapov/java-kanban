@@ -80,9 +80,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         return historyList;
     }
 
-    /**
-     * –еализаци€ метода getHistory должна перекладывать задачи из св€зного списка в ArrayList дл€ формировани€ ответа.
-     */
     @Override
     public List<Task> getHistory() {
         return getTasks();
