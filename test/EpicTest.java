@@ -11,7 +11,7 @@ class EpicTest {
     public void epicsShouldBeEquals() {
         Epic epic1 = new Epic("components.Epic for test 1", "Testing epic 1", 1);
         Epic epic2 = new Epic("components.Epic for test 2", "Testing epic 2", 1);
-        assertEquals(epic1, epic2, "Эпики разные");
+        assertEquals(epic1, epic2, "Р­РїРёРєРё СЂР°Р·РЅС‹Рµ");
     }
 
     @Test
