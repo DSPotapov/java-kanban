@@ -172,7 +172,7 @@ public class Main {
 
         System.out.println("удаляем стаску");
         manager.deleteTask(1);
-        printAllTasks(manager);;
+        printAllTasks(manager);
 
         System.out.println("удаление эпика");
         manager.deleteEpic(6);
