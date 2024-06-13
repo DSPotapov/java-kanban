@@ -2,7 +2,6 @@ import components.Epic;
 import components.SubTask;
 import components.Task;
 import components.TaskStatus;
-import managers.HistoryManager;
 import managers.Managers;
 import managers.TaskManager;
 
@@ -123,7 +122,7 @@ public class Main {
         }
     }
 
-    public static void localTest1(){
+    public static void localTest1() {
         TaskManager manager = Managers.getDefault();
 
         manager.addNewTask(new Task("Задача 1", "Выполнить задачу 1"));
