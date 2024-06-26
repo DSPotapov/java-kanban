@@ -8,7 +8,7 @@ public class Task {
     protected int id;
     protected TaskStatus taskStatus;
 
-    protected String taskType = "Task";
+    protected TaskType taskType = TaskType.TASK;
 
     public Task(String name, String description, int id) {
         this.name = name;
@@ -43,7 +43,7 @@ public class Task {
         return taskStatus;
     }
 
-    public String getTaskType() {
+    public TaskType getTaskType() {
         return taskType;
     }
 
