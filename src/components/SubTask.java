@@ -1,3 +1,7 @@
+package components;
+
+import components.Task;
+
 public class SubTask extends Task {
 
     private int epicId;
@@ -27,6 +31,6 @@ public class SubTask extends Task {
                 ", taskStatus='" + taskStatus + '\'' +
                 ", taskType='" + taskType + '\'' +
                 ", epicId=" + epicId +
-                "}";
+                "}\n";
     }
 }

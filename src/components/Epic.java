@@ -1,3 +1,5 @@
+package components;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,15 +16,19 @@ public class Epic extends Task {
         this.taskType = "Epic";
     }
 
-    public void addSubTaskId(int subTaskId){
+    public void addSubTaskId(int subTaskId) {
         subTaskIds.add(subTaskId);
     }
 
-    public void deleteSubTaskId(int subTaskId){
-        subTaskIds.remove(subTaskId);
+    public void deleteSubTaskId(int subTaskId) {
+        subTaskIds.remove((Integer) subTaskId);
     }
 
     public List<Integer> getSubTaskIds() {
         return subTaskIds;
+    }
+
+    public boolean isSubTaskId(int id) {
+        return subTaskIds.contains((Integer) id);
     }
 }

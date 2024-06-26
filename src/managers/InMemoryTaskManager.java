@@ -1,3 +1,11 @@
+package managers;
+
+import components.Epic;
+import components.SubTask;
+import components.Task;
+import components.TaskStatus;
+import managers.HistoryManager;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +27,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int addNewTask(Task newTask) {
         if (newTask == null) {
-            System.out.println("Ошибка, задачи не существует");
+            System.out.println("РћС€РёР±РєР°, Р·Р°РґР°С‡Рё РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚");
             return -1;
         }
         int id = idGenerator();
@@ -31,7 +39,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int addNewSubTask(SubTask newSubTask) {
         if (newSubTask == null) {
-            System.out.println("Ошибка, задачи не существует");
+            System.out.println("РћС€РёР±РєР°, Р·Р°РґР°С‡Рё РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚");
             return -1;
         }
         int id = idGenerator();
@@ -42,15 +50,13 @@ public class InMemoryTaskManager implements TaskManager {
         if (TaskStatus.DONE.equals(epic.getTaskStatus())) {
             epic.setTaskStatus(TaskStatus.NEW);
         }
-        epics.get(newSubTask.getEpicId()).addSubTaskId(id);
-
         return id;
     }
 
     @Override
     public int addNewEpic(Epic newEpic) {
         if (newEpic == null) {
-            System.out.println("Ошибка, задачи не существует");
+            System.out.println("РћС€РёР±РєР°, Р·Р°РґР°С‡Рё РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚");
             return -1;
         }
         int id = idGenerator();
@@ -94,6 +100,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteTask(int taskId) {
         tasks.remove(taskId);
+        historyManager.remove(taskId);
     }
 
     @Override
@@ -106,25 +113,28 @@ public class InMemoryTaskManager implements TaskManager {
         if (epic.getSubTaskIds().isEmpty()) {
             epic.setTaskStatus(TaskStatus.NEW);
         }
+        historyManager.remove(subTaskId);
     }
 
     @Override
     public void deleteEpic(int epicId) {
         Epic epic = epics.get(epicId);
-        List<Integer> ids = epic.getSubTaskIds();
-        for (int id : ids) {
+        List<Integer> subTaskIds = epic.getSubTaskIds();
+        for (int id : subTaskIds) {
             subTasks.remove(id);
+            historyManager.remove(id);
         }
         epics.remove(epicId);
+        historyManager.remove(epicId);
     }
 
     @Override
     public void printTasks() {
-        System.out.println("Список задач:");
+        System.out.println("РЎРїРёСЃРѕРє Р·Р°РґР°С‡:");
         System.out.println(getTasks());
-        System.out.println("Список эпиков:");
+        System.out.println("РЎРїРёСЃРѕРє СЌРїРёРєРѕРІ:");
         System.out.println(getEpics());
-        System.out.println("Список подзадач:");
+        System.out.println("РЎРїРёСЃРѕРє РїРѕРґР·Р°РґР°С‡:");
         System.out.println(getSubTasks());
         System.out.println();
     }

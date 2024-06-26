@@ -1,3 +1,5 @@
+package components;
+
 import java.util.Objects;
 
 public class Task {
@@ -77,6 +79,6 @@ public class Task {
                 ", id=" + id +
                 ", taskStatus=" + taskStatus +
                 ", taskType='" + taskType + '\'' +
-                "}";
+                "}\n";
     }
 }
