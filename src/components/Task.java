@@ -23,6 +23,10 @@ public class Task {
         this.taskStatus = TaskStatus.NEW;
     }
 
+    public void setTaskType(TaskType taskType) {
+        this.taskType = taskType;
+    }
+
     public String getName() {
         return name;
     }

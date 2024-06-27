@@ -22,7 +22,7 @@ public class Main {
         /* тестирование на локальном файле
          */
         try {
-            file = new File("/home/denis/dev/java/ya_practicum/test.csv");
+            file = new File("test.csv");
             if (file.exists()) {
                 System.out.println("Файл уже существует");
             } else {
@@ -49,6 +49,10 @@ public class Main {
         taskManager.addNewSubTask(subTask2);
         Epic epic1 = new Epic("epic1 for test", "testing epic1");
         taskManager.addNewEpic(epic1);
+        Task task2 = new Task("task2 for test", "testing task2");
+
+        taskManager.deleteEpic(epic0.getId());
+
     }
 
     private static void printAllTasks(TaskManager manager) {

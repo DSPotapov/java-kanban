@@ -1,14 +1,16 @@
 package managers;
 
-import components.Epic;
-import components.SubTask;
-import components.Task;
+import components.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.SortedSet;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     File file;
@@ -18,30 +20,18 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     private void save() {
-        // TODO соханять состояние менеджера в файл path
-        /*
-            файл каждый раз полностью перезаписывается
-            1. пишем строку заголовков
-            2. пишет таски, эпики, сабтаски
-            3. чтобы записать данные по порядку айдишников, нужно сначала
-            записать таски в Map<id, String> потом записать в файл
-            4. получить список keys из общей мапы тасок, отсортировать и
-            проходя по отсортированному списку вызывать соответствующий элемент мапы
-            и записывать в файл по порядку
-         */
-
         Map<Integer, String> taskMap = collectAllTasks();
-        Set<Integer> ids = taskMap.keySet();
-
-        Arrays.sort(ids);
 
         try (FileWriter writer = new FileWriter(file)) {
             writer.write("id,type,name,status,description,epic\n");
 
+            for (Entry<Integer, String> entry : taskMap.entrySet()){
+                writer.append(entry.getValue());
+                writer.append("\n");
+            }
         } catch(IOException e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     static FileBackedTaskManager loadFromFile(File file){
@@ -49,22 +39,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public String taskToString(Task task){
-        String taskString = task.getId() + ", "
-                + task.getTaskType() + ", "
-                + task.getName() + ", "
-                + task.getTaskStatus() + ", "
+        return task.getId() + ","
+                + task.getTaskType() + ","
+                + task.getName() + ","
+                + task.getTaskStatus() + ","
                 + task.getDescription();
-        return taskString;
     }
 
-    public String subTaskToString(SubTask task){
-        String taskString = task.getId() + ", "
-                + task.getTaskType() + ", "
-                + task.getName() + ", "
-                + task.getTaskStatus() + ", "
-                + task.getDescription() + ", "
-                + task.getEpicId();
-        return taskString;
+    public String subTaskToString(SubTask subTask){
+        return taskToString(subTask) + "," + subTask.getEpicId();
     }
 
     /**
@@ -89,9 +72,26 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return taskMap;
     }
 
-    public Task fromString(String value){
-        //TODO метод создания задачи из строки
-        return null;
+    public Task taskFromString(String value){
+        //id,type,name,status,description,epic
+        String[] taskFields = value.split(",");
+        int id = Integer.getInteger(taskFields[0]);
+        TaskType taskType = TaskType.valueOf(taskFields[1]);
+        String name = taskFields[2];
+        TaskStatus taskStatus = TaskStatus.valueOf(taskFields[3]);
+        String description = taskFields[4];
+
+        Task task = new Task(name, description, id);
+
+        if (taskFields.length > 5){
+            int epicId = Integer.getInteger(taskFields[5]);
+            task.setEpicId(epicId);
+        }
+
+        task.setTaskType(taskType);
+        task.setTaskStatus(taskStatus);
+
+        return task;
     }
 
     @Override

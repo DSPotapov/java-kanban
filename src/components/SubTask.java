@@ -4,6 +4,10 @@ import components.Task;
 
 public class SubTask extends Task {
 
+    public void setEpicId(int epicId) {
+        this.epicId = epicId;
+    }
+
     private int epicId;
 
     public SubTask(String name, String description, int id, int epicId) {
