@@ -1,6 +1,6 @@
 package managers;
 
-import java.nio.file.Path;
+import java.io.File;
 
 /*
 утилитарный класс
@@ -10,8 +10,8 @@ public class Managers {
         return new InMemoryTaskManager();
     }
 
-    public static TaskManager getFileBackedTaskManager(Path path) {
-        return new FileBackedTaskManager(path);
+    public static TaskManager getFileBackedTaskManager(File file) {
+        return new FileBackedTaskManager(file);
     }
 
     public static HistoryManager getDefaultHistory() {

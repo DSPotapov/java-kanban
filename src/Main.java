@@ -3,14 +3,52 @@ import managers.FileBackedTaskManager;
 import managers.Managers;
 import managers.TaskManager;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 
 public class Main {
 
     public static void main(String[] args) {
-        FileBackedTaskManager manager = new FileBackedTaskManager(Paths.get("test.txt"));
+        File file = null;
+        /* тестирование на временном файле
+        try {
+            file = File.createTempFile("test", "csv");
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+         */
 
+        /* тестирование на локальном файле
+         */
+        try {
+            file = new File("/home/denis/dev/java/ya_practicum/test.csv");
+            if (file.exists()) {
+                System.out.println("Файл уже существует");
+            } else {
+                boolean created = file.createNewFile();
+                if (created) System.out.println("Файл создан");
+            }
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
 
+        FileBackedTaskManager taskManager = new FileBackedTaskManager(file);
+        // заготовка для тестов
+        Task task0 = new Task("task0 for test", "testing task0");
+        taskManager.addNewTask(task0);
+        Task task1 = new Task("task1 for test", "testing task1");
+        taskManager.addNewTask(task1);
+        Epic epic0 = new Epic("epic0 for test", "testing epic0");
+        taskManager.addNewEpic(epic0);
+        SubTask subTask0 = new SubTask("subTask0 for test", "testing subTask0", epic0.getId());
+        SubTask subTask1 = new SubTask("subTask1 for test", "testing subTask1", epic0.getId());
+        SubTask subTask2 = new SubTask("subTask2 for test", "testing subTask1", epic0.getId());
+        taskManager.addNewSubTask(subTask0);
+        taskManager.addNewSubTask(subTask1);
+        taskManager.addNewSubTask(subTask2);
+        Epic epic1 = new Epic("epic1 for test", "testing epic1");
+        taskManager.addNewEpic(epic1);
     }
 
     private static void printAllTasks(TaskManager manager) {
@@ -93,7 +131,7 @@ public class Main {
         printAllTasks(manager);
     }
 
-    public static void testFor6Sprint(){
+    public static void testFor6Sprint() {
         TaskManager taskManager = Managers.getDefault();
 
         //1. Создайте две задачи, эпик с тремя подзадачами и эпик без подзадач.

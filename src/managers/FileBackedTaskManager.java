@@ -4,23 +4,37 @@ import components.Epic;
 import components.SubTask;
 import components.Task;
 
-import java.nio.file.Path;
+import java.io.File;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
-    Path path;
+    File file;
 
-    public FileBackedTaskManager(Path path) {
-        this.path = path;
+    public FileBackedTaskManager(File file) {
+        this.file = file;
     }
 
-    private boolean save() {
+    private void save() {
         // TODO соханять состояние менеджера в файл path
+        //1 Записываем таски
+        //2 Записываем эпики
+        //3 Записываем сабтаски
 
-        return false;
     }
 
+    static FileBackedTaskManager loadFromFile(File file){
+        return new FileBackedTaskManager(file);
+    }
 
+    public String toString(Task task){
+        //TODO метод сохранения задачи в строку
 
+        return "task";
+    }
+
+    public Task fromString(String value){
+        //TODO метод создания задачи из строки
+        return null;
+    }
 
     @Override
     public int addNewTask(Task newTask) {
