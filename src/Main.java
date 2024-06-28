@@ -53,6 +53,12 @@ public class Main {
 
         taskManager.deleteEpic(epic0.getId());
 
+        /* ----------------чтение из файл--------------------------- */
+
+        FileBackedTaskManager taskManager1 = FileBackedTaskManager.loadFromFile(file);
+        Epic epic1_1 = new Epic("epic1_1 for test", "testing epic1_1");
+        taskManager1.addNewEpic(epic1_1);
+
     }
 
     private static void printAllTasks(TaskManager manager) {
