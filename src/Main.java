@@ -11,16 +11,16 @@ public class Main {
 
     public static void main(String[] args) {
         File file = null;
-        /* тестирование на временном файле
+        /* тестирование на временном файле*/
         try {
             file = File.createTempFile("test", "csv");
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
-         */
+
 
         /* тестирование на локальном файле
-         */
+
         try {
             file = new File("test.csv");
             if (file.exists()) {
@@ -32,6 +32,7 @@ public class Main {
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
+         */
 
         FileBackedTaskManager taskManager = new FileBackedTaskManager(file);
         // заготовка для тестов
@@ -51,13 +52,15 @@ public class Main {
         taskManager.addNewEpic(epic1);
         Task task2 = new Task("task2 for test", "testing task2");
 
-        taskManager.deleteEpic(epic0.getId());
+        printAllTasks(taskManager);
 
-        /* ----------------чтение из файл--------------------------- */
+        /* ----------------чтение из файла--------------------------- */
 
         FileBackedTaskManager taskManager1 = FileBackedTaskManager.loadFromFile(file);
         Epic epic1_1 = new Epic("epic1_1 for test", "testing epic1_1");
         taskManager1.addNewEpic(epic1_1);
+
+        printAllTasks(taskManager1);
 
     }
 
@@ -67,21 +70,25 @@ public class Main {
             System.out.println(task);
         }
         System.out.println("Эпики:");
-        for (Task epic : manager.getEpics()) {
+        for (Epic epic : manager.getEpics()) {
             System.out.println(epic);
 
-            for (Task task : manager.getEpicSubTasks(epic.getId())) {
-                System.out.println("--> " + task);
+            for (SubTask subTask : manager.getEpicSubTasks(epic.getId())) {
+                System.out.println("--> " + subTask);
             }
         }
         System.out.println("Подзадачи:");
-        for (Task subtask : manager.getSubTasks()) {
+        for (SubTask subtask : manager.getSubTasks()) {
             System.out.println(subtask);
         }
 
-        System.out.println("История:");
-        for (Task task : manager.getHistory()) {
-            System.out.println(task);
+        if (manager.getHistory().isEmpty()) {
+            System.out.println("История пустая");
+        } else {
+            System.out.println("История:");
+            for (Task task : manager.getHistory()) {
+                System.out.println(task);
+            }
         }
     }
 

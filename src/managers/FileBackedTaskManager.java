@@ -3,15 +3,12 @@ package managers;
 import components.*;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.SortedSet;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     File file;
@@ -54,11 +51,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     restoredTaskManager.addNewTask(task);
                 }
                 case EPIC -> {
-                    Epic epic = (Epic) taskFromString(stringTasks[i]);
+                    Epic epic = epicFromString(stringTasks[i]);
                     restoredTaskManager.addNewTask(epic);
                 }
                 case SUBTASK -> {
-                    SubTask subTask = (SubTask) taskFromString(stringTasks[i]);
+                    SubTask subTask = subTaskFromString(stringTasks[i]);
                     restoredTaskManager.addNewTask(subTask);
                 }
             }
@@ -102,8 +99,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return taskMap;
     }
 
-    static Task taskFromString(String value) {
-        //id,type,name,status,description,epic
+    public static Task taskFromString(String value) {
+        //id,type,name,status,description
         String[] taskFields = value.split(",");
         int id = Integer.parseInt(taskFields[0]);
         TaskType taskType = TaskType.valueOf(taskFields[1]);
@@ -115,18 +112,40 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         task.setTaskType(taskType);
         task.setTaskStatus(taskStatus);
 
-        if (taskType == TaskType.EPIC){
-            return (Epic) task;
-        }
-
-        if (taskFields.length > 5) {
-            int epicId = Integer.getInteger(taskFields[5]);
-            SubTask subTask = (SubTask) task;
-            subTask.setEpicId(epicId);
-            return subTask;
-        }
-
         return task;
+    }
+
+    static Epic epicFromString(String value) {
+        //id,type,name,status,description
+        String[] taskFields = value.split(",");
+        int id = Integer.parseInt(taskFields[0]);
+        TaskType taskType = TaskType.valueOf(taskFields[1]);
+        String name = taskFields[2];
+        TaskStatus taskStatus = TaskStatus.valueOf(taskFields[3]);
+        String description = taskFields[4];
+
+        Epic epic = new Epic(name, description, id);
+        epic.setTaskType(taskType);
+        epic.setTaskStatus(taskStatus);
+
+        return epic;
+    }
+
+    static SubTask subTaskFromString(String value) {
+        //id,type,name,status,description,epic
+        String[] taskFields = value.split(",");
+        int id = Integer.parseInt(taskFields[0]);
+        TaskType taskType = TaskType.valueOf(taskFields[1]);
+        String name = taskFields[2];
+        TaskStatus taskStatus = TaskStatus.valueOf(taskFields[3]);
+        String description = taskFields[4];
+
+        int epicId = Integer.parseInt(taskFields[5]);
+        SubTask subTask = new SubTask(name, description, id, epicId);
+        subTask.setTaskType(taskType);
+        subTask.setTaskStatus(taskStatus);
+
+        return subTask;
     }
 
     @Override
