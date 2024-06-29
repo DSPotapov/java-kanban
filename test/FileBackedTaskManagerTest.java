@@ -13,7 +13,7 @@ public class FileBackedTaskManagerTest {
     private File file;
     private FileBackedTaskManager taskManager;
 
-    /* тестирование на временном файле*/
+    /* С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ РЅР° РІСЂРµРјРµРЅРЅРѕРј С„Р°Р№Р»Рµ*/
     @BeforeEach
     private void createFile() {
         try {
