@@ -1,17 +1,12 @@
 import components.Task;
 import managers.FileBackedTaskManager;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.File;
-import java.io.IOException;
-
 public class FileBackedTaskManagerTest {
-    private File file;
-    private FileBackedTaskManager taskManager;
 
     @Test
     public void taskToStringTest() {

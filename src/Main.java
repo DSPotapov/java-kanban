@@ -13,7 +13,6 @@ public class Main {
 
     public static void main(String[] args) {
         File file = null;
-        /* тестирование на временном файле*/
         try {
             file = File.createTempFile("test", "csv");
         } catch (IOException ex) {
@@ -22,7 +21,6 @@ public class Main {
 
 
         /* тестирование на локальном файле
-
         try {
             file = new File("test.csv");
             if (file.exists()) {
