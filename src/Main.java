@@ -57,7 +57,7 @@ public class Main {
         /* ----------------чтение из файла--------------------------- */
 
         FileBackedTaskManager taskManager1 = FileBackedTaskManager.loadFromFile(file);
-        Epic epic1_1 = new Epic("epic1_1 for test", "testing epic1_1");
+        Epic epic1_1 = new Epic("epic11 for test", "testing epic11");
         taskManager1.addNewEpic(epic1_1);
 
         printAllTasks(taskManager1);

@@ -26,16 +26,16 @@ public class FileBackedTaskManagerTest {
 
     @Test
     public void taskToStringTest() {
-        Task task = new Task("task_1 for test", "test task_1", 1);
+        Task task = new Task("task1 for test", "test task1", 1);
         String stringTask = taskManager.taskToString(task);
-        assertEquals("1,TASK,task_1 for test,NEW,test task_1", stringTask);
+        assertEquals("1,TASK,task1 for test,NEW,test task1", stringTask);
 
     }
 
     @Test
     public void taskFromStringTest() {
-        String stringTask = "1,TASK,task_1 for test,NEW,test task_1";
-        Task task = new Task("task_1 for test", "test task_1", 1);
+        String stringTask = "1,TASK,task1 for test,NEW,test task1";
+        Task task = new Task("task1 for test", "test task1", 1);
         Task taskFromString = FileBackedTaskManager.taskFromString(stringTask);
         assertEquals(task, taskFromString);
     }
