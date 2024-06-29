@@ -13,21 +13,10 @@ public class FileBackedTaskManagerTest {
     private File file;
     private FileBackedTaskManager taskManager;
 
-    /* тестирование на временном файле*/
-    @BeforeEach
-    private void createFile() {
-        try {
-            file = File.createTempFile("test", "csv");
-            taskManager = new FileBackedTaskManager(file);
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-
     @Test
     public void taskToStringTest() {
         Task task = new Task("task1 for test", "test task1", 1);
-        String stringTask = taskManager.taskToString(task);
+        String stringTask = FileBackedTaskManager.taskToString(task);
         assertEquals("1,TASK,task1 for test,NEW,test task1", stringTask);
 
     }

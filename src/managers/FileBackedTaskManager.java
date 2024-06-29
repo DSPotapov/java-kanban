@@ -64,7 +64,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return restoredTaskManager;
     }
 
-    public String taskToString(Task task) {
+    static public String taskToString(Task task) {
         return task.getId() + ","
                 + task.getTaskType() + ","
                 + task.getName() + ","
@@ -72,7 +72,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 + task.getDescription();
     }
 
-    public String subTaskToString(SubTask subTask) {
+    static public String subTaskToString(SubTask subTask) {
         return taskToString(subTask) + "," + subTask.getEpicId();
     }
 
