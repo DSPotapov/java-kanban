@@ -22,7 +22,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
         try {
             if (!file.isFile()){
-                throw new ManagerSaveException(file, "По указаному пути нет файла.");
+                throw new ManagerSaveException("По указаному пути нет файла.", file);
             }
             FileWriter writer = new FileWriter(file);
             writer.write("id,type,name,status,description,epic\n");
