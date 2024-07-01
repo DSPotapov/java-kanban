@@ -1,8 +1,6 @@
 package managers;
 
-import managers.HistoryManager;
-import managers.InMemoryHistoryManager;
-import managers.InMemoryTaskManager;
+import java.io.File;
 
 /*
 утилитарный класс
@@ -10,6 +8,10 @@ import managers.InMemoryTaskManager;
 public class Managers {
     public static TaskManager getDefault() {
         return new InMemoryTaskManager();
+    }
+
+    public static TaskManager getFileBackedTaskManager(File file) {
+        return new FileBackedTaskManager(file);
     }
 
     public static HistoryManager getDefaultHistory() {

@@ -1,4 +1,6 @@
 import components.Epic;
+import components.Task;
+import components.TaskType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,6 +17,11 @@ class EpicTest {
     @Test
     public void deleteSubTask() {
         Epic epic = new Epic("Epic for test", "Test epic");
+    }
 
+    @Test
+    public void getEpicType() {
+        Epic epic = new Epic("Epic for test 1", "Testing epic");
+        assertEquals(TaskType.EPIC, epic.getTaskType());
     }
 }
