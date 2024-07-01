@@ -21,7 +21,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         Map<Integer, String> taskMap = collectAllTasks();
 
         try {
-            if (!file.isFile()){
+            if (!file.isFile()) {
                 throw new ManagerSaveException("По указаному пути нет файла.", file);
             }
             FileWriter writer = new FileWriter(file);
