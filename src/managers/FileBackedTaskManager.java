@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
-    File file;
+    private final File file;
 
     public FileBackedTaskManager(File file) {
         this.file = file;
@@ -20,15 +20,21 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private void save() {
         Map<Integer, String> taskMap = collectAllTasks();
 
-        try (FileWriter writer = new FileWriter(file)) {
+        try {
+            if (!file.isFile()){
+                throw new ManagerSaveException(file, "По указаному пути нет файла.");
+            }
+            FileWriter writer = new FileWriter(file);
             writer.write("id,type,name,status,description,epic\n");
 
             for (Entry<Integer, String> entry : taskMap.entrySet()) {
                 writer.append(entry.getValue());
                 writer.append("\n");
             }
-        } catch (IOException e) {
+        } catch (ManagerSaveException e) {
             System.out.println(e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -82,7 +88,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
      * @return мап id таски : строковое представление таски
      */
     public Map<Integer, String> collectAllTasks() {
-        Map<Integer, String> taskMap = new HashMap<>();
+        final Map<Integer, String> taskMap = new HashMap<>();
 
         for (Task task : tasks.values()) {
             taskMap.put(task.getId(), taskToString(task));
@@ -173,6 +179,33 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             save();
         }
         return result;
+    }
+
+    @Override
+    public Task getTaskById(int id) {
+        Task task = tasks.getOrDefault(id, null);
+        if (task != null) {
+            historyManager.add(task);
+        }
+        return task;
+    }
+
+    @Override
+    public SubTask getSubTaskById(int id) {
+        SubTask task = subTasks.getOrDefault(id, null);
+        if (task != null) {
+            historyManager.add(task);
+        }
+        return task;
+    }
+
+    @Override
+    public Epic getEpicById(int id) {
+        Epic task = epics.getOrDefault(id, null);
+        if (task != null) {
+            historyManager.add(task);
+        }
+        return task;
     }
 
     @Override
