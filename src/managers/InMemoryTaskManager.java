@@ -4,7 +4,6 @@ import components.Epic;
 import components.SubTask;
 import components.Task;
 import components.TaskStatus;
-import managers.HistoryManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,15 +11,15 @@ import java.util.List;
 import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
-    private static int taskId = 1;
+    static int taskId = 1;
 
-    private final Map<Integer, Task> tasks = new HashMap<>();
-    private final Map<Integer, SubTask> subTasks = new HashMap<>();
-    private final Map<Integer, Epic> epics = new HashMap<>();
+    protected final Map<Integer, Task> tasks = new HashMap<>();
+    protected final Map<Integer, SubTask> subTasks = new HashMap<>();
+    protected final Map<Integer, Epic> epics = new HashMap<>();
 
-    private HistoryManager historyManager = Managers.getDefaultHistory();
+    protected final HistoryManager historyManager = Managers.getDefaultHistory();
 
-    private int idGenerator() {
+    int idGenerator() {
         return taskId++;
     }
 

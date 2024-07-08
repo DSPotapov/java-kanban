@@ -1,5 +1,6 @@
 import components.Task;
 import components.TaskStatus;
+import components.TaskType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,6 +23,6 @@ public class TaskTest {
     @Test
     public void getTaskType() {
         Task task = new Task("Task for test 1", "Testing task");
-        assertEquals("Task", task.getTaskType());
+        assertEquals(TaskType.TASK, task.getTaskType());
     }
 }
