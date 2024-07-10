@@ -8,15 +8,16 @@ public class Task {
     protected String name;
     protected String description;
     protected int id;
-    protected Duration duration; // продолжительность задачи, оценка того, сколько времени она займёт в минутах
-    protected LocalDateTime startTime; // дата и время, когда предполагается приступить к выполнению задачи
-    protected TaskStatus taskStatus;
+    // продолжительность задачи, оценка того, сколько времени она займёт в минутах(секундах), по умолчанию: сутки
+    protected Duration duration = Duration.ofSeconds(24 * 60 * 60);
+    // дата и время, когда предполагается приступить к выполнению задачи, по умолчанию: дата создания
+    protected LocalDateTime startTime = LocalDateTime.now();
+    protected TaskStatus taskStatus = TaskStatus.NEW;
     protected TaskType taskType = TaskType.TASK;
 
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
-        this.taskStatus = TaskStatus.NEW;
     }
 
     public Task(String name, String description, int id) {
@@ -24,9 +25,13 @@ public class Task {
         this.id = id;
     }
 
-    public Task(String name, String description, LocalDateTime startTime, Duration duration) {
+    public Task(String name, String description, LocalDateTime startTime) {
         this(name, description);
         this.startTime = startTime;
+    }
+
+    public Task(String name, String description, LocalDateTime startTime, Duration duration) {
+        this(name, description, startTime);
         this.duration = duration;
     }
 
@@ -109,6 +114,8 @@ public class Task {
                 ", id=" + id +
                 ", taskStatus=" + taskStatus +
                 ", taskType='" + taskType + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + getEndTime() +
                 "}\n";
     }
 }

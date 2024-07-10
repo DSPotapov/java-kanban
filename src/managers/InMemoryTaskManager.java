@@ -55,6 +55,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (TaskStatus.DONE.equals(epic.getTaskStatus())) {
             epic.setTaskStatus(TaskStatus.NEW);
         }
+        //обновляем время эпика
         calculateEpicTiming(epic.getId());
         return id;
     }
@@ -81,6 +82,7 @@ public class InMemoryTaskManager implements TaskManager {
         subTasks.put(subTask.getId(), subTask);
         int epicId = subTask.getEpicId();
         checkoutEpicStatus(epicId);
+        //обновляем время эпика
         calculateEpicTiming(epicId);
     }
 
@@ -108,9 +110,10 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     /**
-     * определяем время начала работы над эпико планирумое окончани и длительность, от сабтасок
+     * определяем время начала работы над эпиком планирумое окончание и длительность, от сабтасок
      **/
     private void calculateEpicTiming(int epicId) {
+
         Epic epic = epics.get(epicId);
         LocalDateTime epicStartTime = LocalDateTime.MAX;
         LocalDateTime epicEndTime = LocalDateTime.MIN;
@@ -126,6 +129,7 @@ public class InMemoryTaskManager implements TaskManager {
                 epicEndTime = subTask.getEndTime();
             }
         }
+
         epic.setStartTime(epicStartTime);
         epic.setEndTime(epicEndTime);
         epic.setDuration(Duration.between(epicStartTime, epicEndTime));
@@ -148,6 +152,7 @@ public class InMemoryTaskManager implements TaskManager {
             epic.setTaskStatus(TaskStatus.NEW);
         }
         historyManager.remove(subTaskId);
+        //обновляем время эпика
         calculateEpicTiming(epicId);
     }
 

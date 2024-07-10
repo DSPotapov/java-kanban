@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -75,11 +76,18 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 + task.getTaskType() + ","
                 + task.getName() + ","
                 + task.getTaskStatus() + ","
-                + task.getDescription();
+                + task.getDescription() + ","
+                + task.getStartTime() + ","
+                + task.getDuration();
     }
 
-    String subTaskToString(SubTask subTask) {
+    public static String subTaskToString(SubTask subTask) {
+
         return taskToString(subTask) + "," + subTask.getEpicId();
+    }
+
+    public static String epicToString(Epic epic) {
+        return taskToString(epic) + "," + epic.getEndTime();
     }
 
     /**
@@ -95,7 +103,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
 
         for (Epic task : epics.values()) {
-            taskMap.put(task.getId(), taskToString(task));
+            taskMap.put(task.getId(), epicToString(task));
         }
 
         for (SubTask task : subTasks.values()) {
@@ -106,13 +114,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public static Task taskFromString(String value) {
-        //id,type,name,status,description
+        //[0]id,[1]type,[2]name,[3]status,[4]description,[5]startTime,[6]duration
         String[] taskFields = value.split(",");
         int id = Integer.parseInt(taskFields[0]);
         TaskType taskType = TaskType.valueOf(taskFields[1]);
         String name = taskFields[2];
         TaskStatus taskStatus = TaskStatus.valueOf(taskFields[3]);
         String description = taskFields[4];
+        System.out.println(taskFields[5]);
+        LocalDateTime startTime = LocalDateTime.parse(taskFields[5]);
+
+
 
         Task task = new Task(name, description, id);
         task.setTaskType(taskType);
