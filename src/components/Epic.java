@@ -6,7 +6,21 @@ import java.util.List;
 
 public class Epic extends Task {
     private final List<Integer> subTaskIds = new ArrayList<>();
+
     private LocalDateTime endTime;
+
+    @Override
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime newEndTime) {
+        endTime = newEndTime;
+    }
+
+    public void setStartTime(LocalDateTime newStartTime) {
+        startTime = newStartTime;
+    }
 
 
     public Epic(String name, String description, int id) {
@@ -22,12 +36,10 @@ public class Epic extends Task {
     public void addSubTaskId(int subTaskId) {
 
         subTaskIds.add(subTaskId);
-        calculateStartEndAndDurationTimes();
     }
 
     public void deleteSubTaskId(int subTaskId) {
         subTaskIds.remove((Integer) subTaskId);
-        calculateStartEndAndDurationTimes();
     }
 
     public List<Integer> getSubTaskIds() {
@@ -38,7 +50,4 @@ public class Epic extends Task {
         return subTaskIds.contains((Integer) id);
     }
 
-    public void calculateStartEndAndDurationTimes(){
-        //TODO из списка сабтасок найти с самым ранним началом и самым поздним окончанием вычислить разницу
-    }
 }

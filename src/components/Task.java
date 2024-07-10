@@ -49,10 +49,6 @@ public class Task {
         return startTime;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
-    }
-
     public void setTaskType(TaskType taskType) {
         this.taskType = taskType;
     }
