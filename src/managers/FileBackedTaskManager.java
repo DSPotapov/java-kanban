@@ -154,10 +154,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     static SubTask subTaskFromString(String value) {
         //[0]id,[1]type,[2]name,[3]status,[4]description,[5]startTime,[6]duration,[7]epicId
         String[] taskFields = value.split(",");
-        System.out.println("taskFields.length = " + taskFields.length);
-        for (String s: taskFields) {
-            System.out.println("s = " + s);
-        }
         int id = Integer.parseInt(taskFields[0]);
         TaskType taskType = TaskType.valueOf(taskFields[1]);
         String name = taskFields[2];

@@ -13,25 +13,25 @@ public class Main {
 
     public static void main(String[] args) {
         File file = null;
-//        try {
-//            file = File.createTempFile("test", "csv");
-//        } catch (IOException ex) {
-//            System.out.println(ex.getMessage());
-//        }
-
-
-        /* тестирование на локальном файле */
         try {
-            file = new File("test.csv");
-            if (file.exists()) {
-                System.out.println("Файл уже существует");
-            } else {
-                boolean created = file.createNewFile();
-                if (created) System.out.println("Файл создан");
-            }
+            file = File.createTempFile("test", "csv");
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
+
+
+        /* тестирование на локальном файле */
+//        try {
+//            file = new File("test.csv");
+//            if (file.exists()) {
+//                System.out.println("Файл уже существует");
+//            } else {
+//                boolean created = file.createNewFile();
+//                if (created) System.out.println("Файл создан");
+//            }
+//        } catch (IOException ex) {
+//            System.out.println(ex.getMessage());
+//        }
          //*/
 
         FileBackedTaskManager taskManager = new FileBackedTaskManager(file);
@@ -57,11 +57,11 @@ public class Main {
 
         /* ----------------чтение из файла--------------------------- */
 
-//        FileBackedTaskManager taskManager1 = FileBackedTaskManager.loadFromFile(file);
-//        Epic epic11 = new Epic("epic11 for test", "testing epic11");
-//        taskManager1.addNewEpic(epic11);
-//
-//        printAllTasks(taskManager1);
+        FileBackedTaskManager taskManager1 = FileBackedTaskManager.loadFromFile(file);
+        Epic epic11 = new Epic("epic11 for test", "testing epic11");
+        taskManager1.addNewEpic(epic11);
+
+        printAllTasks(taskManager1);
 
     }
 
