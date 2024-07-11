@@ -20,11 +20,6 @@ public class Task {
         this.description = description;
     }
 
-    public Task(String name, String description, int id) {
-        this(name, description);
-        this.id = id;
-    }
-
     public Task(String name, String description, LocalDateTime startTime) {
         this(name, description);
         this.startTime = startTime;
@@ -32,6 +27,21 @@ public class Task {
 
     public Task(String name, String description, LocalDateTime startTime, Duration duration) {
         this(name, description, startTime);
+        this.duration = duration;
+    }
+
+    public Task(String name, String description, int id) {
+        this(name, description);
+        this.id = id;
+    }
+
+    public Task(String name, String description, int id, LocalDateTime startTime) {
+        this(name, description, id);
+        this.startTime = startTime;
+    }
+
+    public Task(String name, String description, int id, LocalDateTime startTime, Duration duration) {
+        this(name, description, id, startTime);
         this.duration = duration;
     }
 

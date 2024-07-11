@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,11 +27,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 throw new ManagerSaveException("По указаному пути нет файла.", file);
             }
             FileWriter writer = new FileWriter(file);
-            writer.write("id,type,name,status,description,epic\n");
+            writer.write("id,type,name,status,description,startTime,duration,epic\n");
 
             for (Entry<Integer, String> entry : taskMap.entrySet()) {
-                writer.append(entry.getValue());
-                writer.append("\n");
+                writer.write(entry.getValue());
+                writer.write("\n");
             }
         } catch (ManagerSaveException e) {
             System.out.println(e.getMessage());
@@ -78,7 +79,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 + task.getTaskStatus() + ","
                 + task.getDescription() + ","
                 + task.getStartTime() + ","
-                + task.getDuration();
+                + task.getDuration().toMinutes();
     }
 
     public static String subTaskToString(SubTask subTask) {
@@ -121,12 +122,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String name = taskFields[2];
         TaskStatus taskStatus = TaskStatus.valueOf(taskFields[3]);
         String description = taskFields[4];
-        System.out.println(taskFields[5]);
         LocalDateTime startTime = LocalDateTime.parse(taskFields[5]);
+        Duration duration = Duration.ofMinutes(Integer.parseInt(taskFields[6]));
 
 
-
-        Task task = new Task(name, description, id);
+        Task task = new Task(name, description, id, startTime, duration);
         task.setTaskType(taskType);
         task.setTaskStatus(taskStatus);
 
@@ -134,15 +134,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     static Epic epicFromString(String value) {
-        //id,type,name,status,description
+        //[0]id,[1]type,[2]name,[3]status,[4]description,[5]startTime,[6]duration
         String[] taskFields = value.split(",");
         int id = Integer.parseInt(taskFields[0]);
         TaskType taskType = TaskType.valueOf(taskFields[1]);
         String name = taskFields[2];
         TaskStatus taskStatus = TaskStatus.valueOf(taskFields[3]);
         String description = taskFields[4];
+        LocalDateTime startTime = LocalDateTime.parse(taskFields[5]);
+        Duration duration = Duration.ofMinutes(Integer.parseInt(taskFields[6]));
 
-        Epic epic = new Epic(name, description, id);
+        Epic epic = new Epic(name, description, id, startTime, duration);
         epic.setTaskType(taskType);
         epic.setTaskStatus(taskStatus);
 
@@ -150,15 +152,21 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     static SubTask subTaskFromString(String value) {
-        //id,type,name,status,description,epic
+        //[0]id,[1]type,[2]name,[3]status,[4]description,[5]startTime,[6]duration,[7]epicId
         String[] taskFields = value.split(",");
+        System.out.println("taskFields.length = " + taskFields.length);
+        for (String s: taskFields) {
+            System.out.println("s = " + s);
+        }
         int id = Integer.parseInt(taskFields[0]);
         TaskType taskType = TaskType.valueOf(taskFields[1]);
         String name = taskFields[2];
         TaskStatus taskStatus = TaskStatus.valueOf(taskFields[3]);
         String description = taskFields[4];
+        LocalDateTime startTime = LocalDateTime.parse(taskFields[5]);
+        Duration duration = Duration.ofMinutes(Integer.parseInt(taskFields[6]));
 
-        int epicId = Integer.parseInt(taskFields[5]);
+        int epicId = Integer.parseInt(taskFields[7]);
         SubTask subTask = new SubTask(name, description, id, epicId);
         subTask.setTaskType(taskType);
         subTask.setTaskStatus(taskStatus);
