@@ -22,11 +22,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private void save() {
         Map<Integer, String> taskMap = collectAllTasks();
 
-        try {
+        try (FileWriter writer = new FileWriter(file);){
             if (!file.isFile()) {
                 throw new ManagerSaveException("По указаному пути нет файла.", file);
             }
-            FileWriter writer = new FileWriter(file);
+
             writer.write("id,type,name,status,description,startTime,duration,epic\n");
 
             for (Entry<Integer, String> entry : taskMap.entrySet()) {

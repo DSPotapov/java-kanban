@@ -36,18 +36,18 @@ public class Main {
 
         FileBackedTaskManager taskManager = new FileBackedTaskManager(file);
         // заготовка для тестов
-//        Task task0 = new Task("task0 for test", "testing task0");
-//        taskManager.addNewTask(task0);
+        Task task0 = new Task("task0 for test", "testing task0");
+        taskManager.addNewTask(task0);
         Task task1 = new Task("task1 for test", "testing task1");
         taskManager.addNewTask(task1);
         Epic epic0 = new Epic("epic0 for test", "testing epic0");
         taskManager.addNewEpic(epic0);
         SubTask subTask0 = new SubTask("subTask0 for test", "testing subTask0", epic0.getId());
         SubTask subTask1 = new SubTask("subTask1 for test", "testing subTask1", epic0.getId());
-//        SubTask subTask2 = new SubTask("subTask2 for test", "testing subTask2", epic0.getId());
+        SubTask subTask2 = new SubTask("subTask2 for test", "testing subTask2", epic0.getId());
         taskManager.addNewSubTask(subTask0);
         taskManager.addNewSubTask(subTask1);
-//        taskManager.addNewSubTask(subTask2);
+        taskManager.addNewSubTask(subTask2);
         Epic epic1 = new Epic("epic1 for test", "testing epic1");
         taskManager.addNewEpic(epic1);
         Task task2 = new Task("task2 for test", "testing task2");

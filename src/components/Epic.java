@@ -14,32 +14,31 @@ public class Epic extends Task {
     public Epic(String name, String description) {
         super(name, description);
         this.taskType = TaskType.EPIC;
+        endTime = startTime.plus(duration); // значение по умолчанию
     }
 
     public Epic(String name, String description, int id) {
-        super(name, description, id);
-        this.taskType = TaskType.EPIC;
+        this(name, description);
+        this.id = id;
     }
 
     public Epic(String name, String description, LocalDateTime startTime) {
-        super(name, description);
+        this(name, description);
         this.startTime = startTime;
-        this.taskType = TaskType.EPIC;
     }
 
     public Epic(String name, String description, LocalDateTime startTime, Duration duration) {
-        super(name, description, startTime);
+        this(name, description, startTime);
         this.duration = duration;
-        this.taskType = TaskType.EPIC;
     }
 
     public Epic(String name, String description, int id, LocalDateTime startTime) {
-        super(name, description, id);
+        this(name, description, id);
         this.startTime = startTime;
     }
 
     public Epic(String name, String description, int id, LocalDateTime startTime, Duration duration) {
-        super(name, description, id, startTime);
+        this(name, description, id, startTime);
         this.duration = duration;
     }
 
