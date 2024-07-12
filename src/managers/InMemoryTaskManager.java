@@ -25,7 +25,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public int addNewTask(Task newTask) {
-        //TODO создать исключение
+
         if (getPrioritizedTasks().stream().anyMatch(task -> checkTimeInterception(newTask, task))) {
             System.out.println("Время выполнения задачи пересекается с ранее созданной");
             return -1;
@@ -43,7 +43,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public int addNewSubTask(SubTask newSubTask) {
-        //TODO создать исключение
+
         if (getPrioritizedTasks().stream().anyMatch(task -> checkTimeInterception(newSubTask, task))) {
             System.out.println("Время выполнения задачи пересекается с ранее созданной");
             return -1;
@@ -53,6 +53,7 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println("Ошибка, задачи не существует");
             return -1;
         }
+
         int id = idGenerator();
         newSubTask.setId(id);
         subTasks.put(id, newSubTask);
@@ -98,7 +99,9 @@ public class InMemoryTaskManager implements TaskManager {
     private void checkoutEpicStatus(int epicId) {
         Epic epic = epics.get(epicId);
         List<Integer> ids = epic.getSubTaskIds();
+
         boolean isDone = true;
+
         for (int id : ids) {
             TaskStatus subTaskStatus = subTasks.get(id).getTaskStatus();
             if (!TaskStatus.DONE.equals(subTaskStatus)) {
