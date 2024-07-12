@@ -26,7 +26,11 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int addNewTask(Task newTask) {
         //TODO создать исключение
-        //TODO добавить проверку на пересечение с другими задачами по времени
+        if (getPrioritizedTasks().stream().anyMatch(task -> checkTimeInterception(newTask, task))) {
+            System.out.println("Время выполнения задачи пересекается с ранее созданной");
+            return -1;
+        }
+
         if (newTask == null) {
             System.out.println("Ошибка, задачи не существует");
             return -1;
@@ -40,7 +44,11 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int addNewSubTask(SubTask newSubTask) {
         //TODO создать исключение
-        //TODO добавить проверку на пересечение с другими задачами по времени
+        if (getPrioritizedTasks().stream().anyMatch(task -> checkTimeInterception(newSubTask, task))) {
+            System.out.println("Время выполнения задачи пересекается с ранее созданной");
+            return -1;
+        }
+
         if (newSubTask == null) {
             System.out.println("Ошибка, задачи не существует");
             return -1;
@@ -187,11 +195,11 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public List<SubTask> getEpicSubTasks(int epicId) {
         List<Integer> subTaskIds = epics.get(epicId).getSubTaskIds();
-        List<SubTask> epicSubTasks = new ArrayList<>();
-        for (int id : subTaskIds) {
-            epicSubTasks.add(subTasks.get(id));
-        }
-        return epicSubTasks;
+
+        return new ArrayList<>(subTaskIds.stream()
+                .map(subTasks::get)
+                .collect(Collectors.toList()));
+
     }
 
     @Override
