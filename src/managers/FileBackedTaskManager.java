@@ -21,20 +21,22 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private void save() {
         Map<Integer, String> taskMap = collectAllTasks();
+        FileWriter writer = null;
 
-        try (FileWriter writer = new FileWriter(file);){
-            if (!file.isFile()) {
+        try {
+            if (!file.exists()) {
                 throw new ManagerSaveException("По указаному пути нет файла.", file);
             }
-
+            writer = new FileWriter(file);
             writer.write("id,type,name,status,description,startTime,duration,epic\n");
 
             for (Entry<Integer, String> entry : taskMap.entrySet()) {
                 writer.write(entry.getValue());
                 writer.write("\n");
             }
+            writer.close();
         } catch (ManagerSaveException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Ошибка записи в файл: " + e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -43,7 +45,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public static FileBackedTaskManager loadFromFile(File file) {
         String tasksFromFile = "";
         try {
+            if (!file.exists()) {
+                throw new ManagerSaveException("Такого файла не существует", file);
+            }
             tasksFromFile = Files.readString(file.toPath());
+        } catch (ManagerSaveException e) {
+            System.out.println("Ошибка чтения из файла: " + e);
         } catch (IOException e) {
             System.out.println("e.getMessage() = " + e.getMessage());
         }

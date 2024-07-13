@@ -20,7 +20,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         newNode.prev = previousNode;
     }
 
-    public void removeNode(Node<Task> node) {
+    private void removeNode(Node<Task> node) {
         if (history.size() == 1) {
             tail = null;
             head = null;
@@ -48,7 +48,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         int id = task.getId();
         Node<Task> node = new Node<>(task);
 
-        if (history.size() == 0) {
+        if (history.isEmpty()) {
             head = node;
             tail = node;
         } else {

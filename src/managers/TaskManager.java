@@ -24,6 +24,8 @@ public interface TaskManager {
 
     void deleteEpic(int epicId);
 
+    boolean checkTimeInterception(Task task1, Task task2);
+
     void printTasks();
 
     List<SubTask> getSubTasks();

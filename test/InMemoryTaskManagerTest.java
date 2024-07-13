@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.time.Duration;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -148,12 +149,24 @@ class InMemoryTaskManagerTest {
         assertEquals(TaskStatus.DONE, epic.getTaskStatus());
     }
 
-    public void checkTimeInterceptionTest(){
+    @Test
+    public void checkTimeInterceptionTest() {
 
-        Task task = new Task("task for updateTaskTest0", "testing task0 for updateTaskTest");
-        Task task1 = new Task("task for updateTaskTest1", "testing task1 for updateTaskTest");
-        Task task2 = new Task("task for updateTaskTest2", "testing task2 for updateTaskTest");
-        Task task3 = new Task("task for updateTaskTest3", "testing task3 for updateTaskTest");
+        Task task = new Task("task for updateTaskTest0", "testing task0 for updateTaskTest",
+                LocalDateTime.of(2024, 1, 1, 0, 0),
+                Duration.ofMinutes(60));
+        Task task1 = new Task("task for updateTaskTest1", "testing task1 for updateTaskTest",
+                LocalDateTime.of(2024, 1, 1, 2, 0),
+                Duration.ofMinutes(60));
+        Task task2 = new Task("task for updateTaskTest2", "testing task2 for updateTaskTest",
+                LocalDateTime.of(2024, 1, 1, 0, 0),
+                Duration.ofMinutes(60));
+        Task task3 = new Task("task for updateTaskTest3", "testing task3 for updateTaskTest",
+                LocalDateTime.of(2024, 1, 1, 0, 30),
+                Duration.ofMinutes(60));
+
+        assertFalse(taskManager.checkTimeInterception(task, task1), "Время задачь не должно пересекаться");
+        assertTrue(taskManager.checkTimeInterception(task2, task3), "Время задачь должно пересекаться");
 
     }
 

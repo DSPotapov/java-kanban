@@ -1,11 +1,14 @@
 import components.Task;
 import managers.FileBackedTaskManager;
+import managers.ManagerSaveException;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FileBackedTaskManagerTest {
 
@@ -30,5 +33,15 @@ public class FileBackedTaskManagerTest {
         assertEquals(task, taskFromString);
     }
 
+    @Test
+    public void managerSaveExceptionTest() {
+        assertThrows(ManagerSaveException.class, () -> {
+            File file = new File("temp");
+            if (!file.exists()) {
+                System.out.println(file);
+                throw new ManagerSaveException("Файл с таким именем не существует", file);
+            }
+        }, "Попытка записи в каталог вместо файла должно приводить к исключению");
+    }
 
 }

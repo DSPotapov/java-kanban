@@ -13,6 +13,6 @@ public class ManagerSaveException extends IOException {
 
     @Override
     public String getMessage() {
-        return "Запись по пути " + file.getAbsolutePath() + " невозможна: " + getMessage();
+        return "Запись по пути " + file.getAbsolutePath() + " невозможна: " + super.getMessage();
     }
 }
