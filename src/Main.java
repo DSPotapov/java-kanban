@@ -13,12 +13,6 @@ public class Main {
 
     public static void main(String[] args) {
         File file = null;
-//        try {
-//            file = File.createTempFile("test", "csv");
-//        } catch (IOException ex) {
-//            System.out.println(ex.getMessage());
-//        }
-
 
         /* тестирование на локальном файле */
         try {
@@ -32,7 +26,6 @@ public class Main {
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
-         //*/
 
         FileBackedTaskManager taskManager = new FileBackedTaskManager(file);
         // заготовка для тестов
