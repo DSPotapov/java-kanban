@@ -1,2 +1,2 @@
 # java-kanban
-Repository for homework project.
+Application for task tracking
