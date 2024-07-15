@@ -13,14 +13,8 @@ public class Main {
 
     public static void main(String[] args) {
         File file = null;
-        try {
-            file = File.createTempFile("test", "csv");
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
 
-
-        /* тестирование на локальном файле
+        /* тестирование на локальном файле */
         try {
             file = new File("test.csv");
             if (file.exists()) {
@@ -32,7 +26,6 @@ public class Main {
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
-         */
 
         FileBackedTaskManager taskManager = new FileBackedTaskManager(file);
         // заготовка для тестов
@@ -44,13 +37,14 @@ public class Main {
         taskManager.addNewEpic(epic0);
         SubTask subTask0 = new SubTask("subTask0 for test", "testing subTask0", epic0.getId());
         SubTask subTask1 = new SubTask("subTask1 for test", "testing subTask1", epic0.getId());
-        SubTask subTask2 = new SubTask("subTask2 for test", "testing subTask1", epic0.getId());
+        SubTask subTask2 = new SubTask("subTask2 for test", "testing subTask2", epic0.getId());
         taskManager.addNewSubTask(subTask0);
         taskManager.addNewSubTask(subTask1);
         taskManager.addNewSubTask(subTask2);
         Epic epic1 = new Epic("epic1 for test", "testing epic1");
         taskManager.addNewEpic(epic1);
         Task task2 = new Task("task2 for test", "testing task2");
+        taskManager.addNewTask(task2);
 
         printAllTasks(taskManager);
 

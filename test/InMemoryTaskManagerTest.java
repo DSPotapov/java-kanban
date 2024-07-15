@@ -1,10 +1,14 @@
 import components.Epic;
 import components.SubTask;
 import components.Task;
+import components.TaskStatus;
 import managers.Managers;
 import managers.TaskManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+import java.time.Duration;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,7 +16,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class InMemoryTaskManagerTest {
 
-    private TaskManager taskManager = Managers.getDefault();
+    private TaskManager taskManager;
+
+    @BeforeEach
+    public void beforeTest() {
+        taskManager = Managers.getDefault();
+
+    }
 
     @Test
     void addNewTaskTest() {
@@ -70,7 +80,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void updateTaskTest(){
+    public void updateTaskTest() {
         Task task = new Task("task for updateTaskTest", "testing task for updateTaskTest");
         taskManager.addNewTask(task);
         int id = task.getId();
@@ -78,8 +88,8 @@ class InMemoryTaskManagerTest {
         task.setName("new name of the task");
         taskManager.updateTask(task);
         task = taskManager.getTaskById(id);
-        assertEquals(task.getDescription(),"new description of the task");
-        assertEquals(task.getName(),"new name of the task");
+        assertEquals(task.getDescription(), "new description of the task");
+        assertEquals(task.getName(), "new name of the task");
     }
 
     @Test
@@ -98,7 +108,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void shouldAddAndDeleteSubTask(){
+    public void shouldAddAndDeleteSubTask() {
         Epic epic = new Epic("epic for test", "testing epic");
         taskManager.addNewEpic(epic);
         SubTask subTask = new SubTask("subtask for epic", "testing subtask", epic.getId());
@@ -107,6 +117,57 @@ class InMemoryTaskManagerTest {
         assertTrue(epic.isSubTaskId(id));
         taskManager.deleteSubTask(id);
         assertFalse(epic.isSubTaskId(id));
+    }
+
+    @Test
+    public void checkoutEpicStatusTest() {
+        LocalDateTime startTime = LocalDateTime.now();
+        Epic epic = new Epic("epic for test", "testing epic", 1);
+        taskManager.addNewEpic(epic);
+        SubTask subTask = new SubTask("subtask0 for epic", "testing subtask0", 10, startTime, epic.getId());
+        startTime = startTime.plusSeconds(3600);
+        SubTask subTask1 = new SubTask("subtask1 for epic", "testing subtask1", 11, startTime, epic.getId());
+        startTime = startTime.plusSeconds(3600);
+        SubTask subTask2 = new SubTask("subtask2 for epic", "testing subtask2", 12, startTime, epic.getId());
+        taskManager.addNewSubTask(subTask);
+        taskManager.addNewSubTask(subTask1);
+        taskManager.addNewSubTask(subTask2);
+        assertEquals(TaskStatus.NEW, epic.getTaskStatus());
+
+        subTask1.setTaskStatus(TaskStatus.IN_PROGRESS);
+        taskManager.updateSubTask(subTask1);
+        assertEquals(TaskStatus.IN_PROGRESS, epic.getTaskStatus());
+
+        subTask.setTaskStatus(TaskStatus.DONE);
+        taskManager.updateSubTask(subTask);
+        assertEquals(TaskStatus.IN_PROGRESS, epic.getTaskStatus());
+
+        subTask1.setTaskStatus(TaskStatus.DONE);
+        taskManager.updateSubTask(subTask1);
+        subTask2.setTaskStatus(TaskStatus.DONE);
+        taskManager.updateSubTask(subTask2);
+        assertEquals(TaskStatus.DONE, epic.getTaskStatus());
+    }
+
+    @Test
+    public void checkTimeInterceptionTest() {
+
+        Task task = new Task("task for updateTaskTest0", "testing task0 for updateTaskTest",
+                LocalDateTime.of(2024, 1, 1, 0, 0),
+                Duration.ofMinutes(60));
+        Task task1 = new Task("task for updateTaskTest1", "testing task1 for updateTaskTest",
+                LocalDateTime.of(2024, 1, 1, 2, 0),
+                Duration.ofMinutes(60));
+        Task task2 = new Task("task for updateTaskTest2", "testing task2 for updateTaskTest",
+                LocalDateTime.of(2024, 1, 1, 0, 0),
+                Duration.ofMinutes(60));
+        Task task3 = new Task("task for updateTaskTest3", "testing task3 for updateTaskTest",
+                LocalDateTime.of(2024, 1, 1, 0, 30),
+                Duration.ofMinutes(60));
+
+        assertFalse(taskManager.checkTimeInterception(task, task1), "Время задачь не должно пересекаться");
+        assertTrue(taskManager.checkTimeInterception(task2, task3), "Время задачь должно пересекаться");
+
     }
 
 }

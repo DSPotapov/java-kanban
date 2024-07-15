@@ -1,6 +1,7 @@
 package components;
 
-import components.Task;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class SubTask extends Task {
 
@@ -8,7 +9,13 @@ public class SubTask extends Task {
         this.epicId = epicId;
     }
 
-    private int epicId;
+    private int epicId = -1;
+
+    public SubTask(String name, String description, int epicId) {
+        super(name, description);
+        this.epicId = epicId;
+        this.taskType = TaskType.SUBTASK;
+    }
 
     public SubTask(String name, String description, int id, int epicId) {
         super(name, description, id);
@@ -16,8 +23,20 @@ public class SubTask extends Task {
         this.taskType = TaskType.SUBTASK;
     }
 
-    public SubTask(String name, String description, int epicId) {
-        super(name, description);
+    public SubTask(String name, String description, int id, LocalDateTime startTime, int epicId) {
+        super(name, description, id, startTime);
+        this.epicId = epicId;
+        this.taskType = TaskType.SUBTASK;
+    }
+
+    public SubTask(String name, String description, LocalDateTime startTime, int epicId) {
+        super(name, description, startTime);
+        this.epicId = epicId;
+        this.taskType = TaskType.SUBTASK;
+    }
+
+    public SubTask(String name, String description, LocalDateTime startTime, Duration duration, int epicId) {
+        super(name, description, startTime, duration);
         this.epicId = epicId;
         this.taskType = TaskType.SUBTASK;
     }
