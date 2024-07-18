@@ -63,15 +63,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             switch (taskType) {
                 case TASK -> {
                     Task task = taskFromString(stringTasks[i]);
-                    restoredTaskManager.addNewTask(task);
+                    restoredTaskManager.createTask(task);
                 }
                 case EPIC -> {
                     Epic epic = epicFromString(stringTasks[i]);
-                    restoredTaskManager.addNewTask(epic);
+                    restoredTaskManager.createTask(epic);
                 }
                 case SUBTASK -> {
                     SubTask subTask = subTaskFromString(stringTasks[i]);
-                    restoredTaskManager.addNewTask(subTask);
+                    restoredTaskManager.createTask(subTask);
                 }
             }
         }
@@ -178,8 +178,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public int addNewTask(Task newTask) {
-        int result = super.addNewTask(newTask);
+    public int createTask(Task newTask) {
+        int result = super.createTask(newTask);
         if (result > 0) {
             save();
         }
@@ -187,8 +187,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public int addNewSubTask(SubTask newSubTask) {
-        int result = super.addNewSubTask(newSubTask);
+    public int createSubTask(SubTask newSubTask) {
+        int result = super.createSubTask(newSubTask);
         if (result > 0) {
             save();
         }
@@ -196,8 +196,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public int addNewEpic(Epic newEpic) {
-        int result = super.addNewEpic(newEpic);
+    public int createEpic(Epic newEpic) {
+        int result = super.createEpic(newEpic);
         if (result > 0) {
             save();
         }

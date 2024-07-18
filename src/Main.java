@@ -30,21 +30,21 @@ public class Main {
         FileBackedTaskManager taskManager = new FileBackedTaskManager(file);
         // заготовка для тестов
         Task task0 = new Task("task0 for test", "testing task0");
-        taskManager.addNewTask(task0);
+        taskManager.createTask(task0);
         Task task1 = new Task("task1 for test", "testing task1");
-        taskManager.addNewTask(task1);
+        taskManager.createTask(task1);
         Epic epic0 = new Epic("epic0 for test", "testing epic0");
-        taskManager.addNewEpic(epic0);
+        taskManager.createEpic(epic0);
         SubTask subTask0 = new SubTask("subTask0 for test", "testing subTask0", epic0.getId());
         SubTask subTask1 = new SubTask("subTask1 for test", "testing subTask1", epic0.getId());
         SubTask subTask2 = new SubTask("subTask2 for test", "testing subTask2", epic0.getId());
-        taskManager.addNewSubTask(subTask0);
-        taskManager.addNewSubTask(subTask1);
-        taskManager.addNewSubTask(subTask2);
+        taskManager.createSubTask(subTask0);
+        taskManager.createSubTask(subTask1);
+        taskManager.createSubTask(subTask2);
         Epic epic1 = new Epic("epic1 for test", "testing epic1");
-        taskManager.addNewEpic(epic1);
+        taskManager.createEpic(epic1);
         Task task2 = new Task("task2 for test", "testing task2");
-        taskManager.addNewTask(task2);
+        taskManager.createTask(task2);
 
         printAllTasks(taskManager);
 
@@ -52,7 +52,7 @@ public class Main {
 
         FileBackedTaskManager taskManager1 = FileBackedTaskManager.loadFromFile(file);
         Epic epic11 = new Epic("epic11 for test", "testing epic11");
-        taskManager1.addNewEpic(epic11);
+        taskManager1.createEpic(epic11);
 
         printAllTasks(taskManager1);
 
@@ -89,17 +89,17 @@ public class Main {
     public static void localTest1() {
         TaskManager manager = Managers.getDefault();
 
-        manager.addNewTask(new Task("Задача 1", "Выполнить задачу 1"));
-        manager.addNewTask(new Task("Задача 2", "Выполнить задачу 2"));
+        manager.createTask(new Task("Задача 1", "Выполнить задачу 1"));
+        manager.createTask(new Task("Задача 2", "Выполнить задачу 2"));
 
         Epic epic = new Epic("Эпик 1", "Выполнить эпик 1");
-        manager.addNewEpic(epic);
-        manager.addNewSubTask(new SubTask("Сабтаска 1 эпик 1", "выполнить сабтаску 1 эпика 1", epic.getId()));
-        manager.addNewSubTask(new SubTask("Сабтаска 2 эпик 1", "выполнить сабтаску 2 эпика 1", epic.getId()));
+        manager.createEpic(epic);
+        manager.createSubTask(new SubTask("Сабтаска 1 эпик 1", "выполнить сабтаску 1 эпика 1", epic.getId()));
+        manager.createSubTask(new SubTask("Сабтаска 2 эпик 1", "выполнить сабтаску 2 эпика 1", epic.getId()));
 
         epic = new Epic("Эпик 2", "Выполнить эпик 2");
-        manager.addNewEpic(epic);
-        manager.addNewSubTask(new SubTask("Сабтаска 1 эпик 2", "выполнить сабтаску 1 эпика 2", epic.getId()));
+        manager.createEpic(epic);
+        manager.createSubTask(new SubTask("Сабтаска 1 эпик 2", "выполнить сабтаску 1 эпика 2", epic.getId()));
 
         System.out.println("1");
         printAllTasks(manager);
@@ -147,19 +147,19 @@ public class Main {
 
         //1. Создайте две задачи, эпик с тремя подзадачами и эпик без подзадач.
         Task task0 = new Task("task0 for test", "testing task0");
-        taskManager.addNewTask(task0);
+        taskManager.createTask(task0);
         Task task1 = new Task("task1 for test", "testing task1");
-        taskManager.addNewTask(task1);
+        taskManager.createTask(task1);
         Epic epic0 = new Epic("epic0 for test", "testing epic0");
-        taskManager.addNewEpic(epic0);
+        taskManager.createEpic(epic0);
         SubTask subTask0 = new SubTask("subTask0 for test", "testing subTask0", epic0.getId());
         SubTask subTask1 = new SubTask("subTask1 for test", "testing subTask1", epic0.getId());
         SubTask subTask2 = new SubTask("subTask2 for test", "testing subTask1", epic0.getId());
-        taskManager.addNewSubTask(subTask0);
-        taskManager.addNewSubTask(subTask1);
-        taskManager.addNewSubTask(subTask2);
+        taskManager.createSubTask(subTask0);
+        taskManager.createSubTask(subTask1);
+        taskManager.createSubTask(subTask2);
         Epic epic1 = new Epic("epic1 for test", "testing epic1");
-        taskManager.addNewEpic(epic1);
+        taskManager.createEpic(epic1);
 
         //2.  Запросите созданные задачи несколько раз в разном порядке.
         //3.  После каждого запроса выведите историю и убедитесь, что в ней нет повторов.
