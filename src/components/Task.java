@@ -9,7 +9,7 @@ public class Task {
     protected String description;
     protected int id;
     // продолжительность задачи, оценка того, сколько времени она займёт в минутах(секундах), по умолчанию: сутки
-    protected Duration duration = Duration.ofSeconds(15 * 60);
+    protected Duration duration = Duration.ofMinutes(15);
     // дата и время, когда предполагается приступить к выполнению задачи, по умолчанию: дата создания
     protected LocalDateTime startTime = LocalDateTime.now();
     protected TaskStatus taskStatus = TaskStatus.NEW;
@@ -125,6 +125,7 @@ public class Task {
                 ", taskStatus=" + taskStatus +
                 ", taskType='" + taskType + '\'' +
                 ", startTime=" + startTime +
+                ", duration=" + duration +
                 ", endTime=" + getEndTime() +
                 "}\n";
     }

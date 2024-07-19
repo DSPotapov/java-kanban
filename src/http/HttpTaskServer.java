@@ -1,6 +1,7 @@
 package http;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import http.handlers.*;
@@ -10,6 +11,8 @@ import managers.TaskManager;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class HttpTaskServer {
     private static final int PORT = 8080;
@@ -28,7 +31,7 @@ public class HttpTaskServer {
     public HttpTaskServer(TaskManager manager) throws IOException {
         this(manager, PORT);
     }
-    
+
     public static void main(String[] args) throws IOException {
 
         File file = File.createTempFile("temp", "csv");
@@ -40,7 +43,11 @@ public class HttpTaskServer {
     }
 
     public static Gson getGson() {
-        return new Gson();
+        return new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(Duration.class, new DurationAdapter())
+                .registerTypeAdapter(LocalDateTime.class, new LocalDatetTimeAdapter())
+                .create();
     }
 
     public void start() {

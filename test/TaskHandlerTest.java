@@ -1,4 +1,5 @@
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import components.Task;
 import components.TaskStatus;
 import http.HttpTaskServer;
@@ -25,7 +26,6 @@ public class TaskHandlerTest {
     TaskManager manager;
     HttpClient httpClient;
     Gson gson = HttpTaskServer.getGson();
-
 
     public TaskHandlerTest() throws IOException {
         manager = Managers.getDefault();
@@ -58,6 +58,7 @@ public class TaskHandlerTest {
         Task task = new Task("Test 2", "Testing task 2", LocalDateTime.now(), Duration.ofMinutes(5));
         // конвертируем её в JSON
         String taskJson = gson.toJson(task);
+        System.out.println("taskJson = " + taskJson);
 
         // создаём HTTP-клиент и запрос
         // HttpClient client = HttpClient.newHttpClient();
