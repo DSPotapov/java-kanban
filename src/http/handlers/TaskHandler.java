@@ -3,7 +3,6 @@ package http.handlers;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import components.Task;
-import managers.ManagerSaveException;
 import managers.TaskManager;
 
 import java.io.IOException;
@@ -23,15 +22,13 @@ public class TaskHandler extends BaseHttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
 
         Endpoint endpoint = getEndpoint(exchange.getRequestURI().getPath(), exchange.getRequestMethod());
-
-        //TODO обработка ошибки при записи в файл
         switch (endpoint) {
             case GET_TASKS -> sendText(exchange, manager.getTasks().toString());
             case GET_TASK_BY_ID -> {
                 int id = Integer.parseInt(exchange.getRequestURI().getPath().split("/")[2]);
                 Task task = manager.getTaskById(id);
                 if (task == null) {
-                    sendNotFound(exchange, "Задача " + id + " не найдена.");
+                    sendNotFound(exchange, "Р—Р°РґР°С‡Р° " + id + " РЅРµ РЅР°Р№РґРµРЅР°.");
                     break;
                 }
                 sendText(exchange, task.toString());
@@ -39,11 +36,11 @@ public class TaskHandler extends BaseHttpHandler {
             case CREATE_TASK -> {
                 Task newTask = parseTask(exchange);
                 try {
-                    if (manager.createTask(newTask) == -1) { // проверка на пересечение сдругими задачами
+                    if (manager.createTask(newTask) == -1) {
                         sendHasInteractions(exchange);
                     } else {
                         manager.createTask(newTask);
-                        sendText(exchange, "Задача: " + newTask.toString() + " создана.");
+                        sendText(exchange, "Р—Р°РґР°С‡Р°: " + newTask.toString() + " СЃРѕР·РґР°РЅР°.");
                     }
                 } catch (IOException e) {
                     sendInternalServerError(exchange, e.getMessage());
@@ -55,10 +52,10 @@ public class TaskHandler extends BaseHttpHandler {
                     if (manager.getTasks().contains(task)) {
                         manager.updateTask(task);
                         sendOKStatus(exchange);
-                    } else { // задачу нельзя оновить, так как она еще не создана
+                    } else {
                         sendNotFound(
                                 exchange,
-                                "Задача " + task + " не найдена. Невозможно обновить несуществующую задачу");
+                                "Р—Р°РґР°С‡Р° " + task + " РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚.");
                     }
                 } catch (IOException e) {
                     sendInternalServerError(exchange, e.getMessage());
@@ -73,7 +70,7 @@ public class TaskHandler extends BaseHttpHandler {
                     sendInternalServerError(exchange, e.getMessage());
                 }
             }
-            default -> sendNotFound(exchange, "Проверьте корректность запроса.");
+            default -> sendNotFound(exchange, "РџСЂРѕРІРµСЂСЊС‚Рµ РєРѕСЂСЂРµРєС‚РЅРѕСЃС‚СЊ Р·Р°РїСЂРѕСЃР°.");
         }
     }
 
