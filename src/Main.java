@@ -12,49 +12,6 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) {
-        File file = null;
-
-        /* тестирование на локальном файле */
-        try {
-            file = new File("test.csv");
-            if (file.exists()) {
-                System.out.println("Файл уже существует");
-            } else {
-                boolean created = file.createNewFile();
-                if (created) System.out.println("Файл создан");
-            }
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-
-        FileBackedTaskManager taskManager = new FileBackedTaskManager(file);
-        // заготовка для тестов
-        Task task0 = new Task("task0 for test", "testing task0");
-        taskManager.createTask(task0);
-        Task task1 = new Task("task1 for test", "testing task1");
-        taskManager.createTask(task1);
-        Epic epic0 = new Epic("epic0 for test", "testing epic0");
-        taskManager.createEpic(epic0);
-        SubTask subTask0 = new SubTask("subTask0 for test", "testing subTask0", epic0.getId());
-        SubTask subTask1 = new SubTask("subTask1 for test", "testing subTask1", epic0.getId());
-        SubTask subTask2 = new SubTask("subTask2 for test", "testing subTask2", epic0.getId());
-        taskManager.createSubTask(subTask0);
-        taskManager.createSubTask(subTask1);
-        taskManager.createSubTask(subTask2);
-        Epic epic1 = new Epic("epic1 for test", "testing epic1");
-        taskManager.createEpic(epic1);
-        Task task2 = new Task("task2 for test", "testing task2");
-        taskManager.createTask(task2);
-
-        printAllTasks(taskManager);
-
-        /* ----------------чтение из файла--------------------------- */
-
-        FileBackedTaskManager taskManager1 = FileBackedTaskManager.loadFromFile(file);
-        Epic epic11 = new Epic("epic11 for test", "testing epic11");
-        taskManager1.createEpic(epic11);
-
-        printAllTasks(taskManager1);
 
     }
 
@@ -230,5 +187,51 @@ public class Main {
         System.out.println("Удаляем эпик с сабтасками");
         taskManager.deleteEpic(epic0.getId());
         System.out.println(taskManager.getHistory());
+    }
+
+    public static void testFileBackedTaskManager(){
+        File file = null;
+
+        /* тестирование на локальном файле */
+        try {
+            file = new File("test.csv");
+            if (file.exists()) {
+                System.out.println("Файл уже существует");
+            } else {
+                boolean created = file.createNewFile();
+                if (created) System.out.println("Файл создан");
+            }
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        FileBackedTaskManager taskManager = new FileBackedTaskManager(file);
+        // заготовка для тестов
+        Task task0 = new Task("task0 for test", "testing task0");
+        taskManager.createTask(task0);
+        Task task1 = new Task("task1 for test", "testing task1");
+        taskManager.createTask(task1);
+        Epic epic0 = new Epic("epic0 for test", "testing epic0");
+        taskManager.createEpic(epic0);
+        SubTask subTask0 = new SubTask("subTask0 for test", "testing subTask0", epic0.getId());
+        SubTask subTask1 = new SubTask("subTask1 for test", "testing subTask1", epic0.getId());
+        SubTask subTask2 = new SubTask("subTask2 for test", "testing subTask2", epic0.getId());
+        taskManager.createSubTask(subTask0);
+        taskManager.createSubTask(subTask1);
+        taskManager.createSubTask(subTask2);
+        Epic epic1 = new Epic("epic1 for test", "testing epic1");
+        taskManager.createEpic(epic1);
+        Task task2 = new Task("task2 for test", "testing task2");
+        taskManager.createTask(task2);
+
+        printAllTasks(taskManager);
+
+        /* ----------------чтение из файла--------------------------- */
+
+        FileBackedTaskManager taskManager1 = FileBackedTaskManager.loadFromFile(file);
+        Epic epic11 = new Epic("epic11 for test", "testing epic11");
+        taskManager1.createEpic(epic11);
+
+        printAllTasks(taskManager1);
     }
 }
