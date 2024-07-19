@@ -15,6 +15,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class TaskHandlerTest {
     HttpTaskServer httpTaskServer;
@@ -42,8 +46,6 @@ public class TaskHandlerTest {
 
     @Test
     public void getTasksTest() {
-
-
     }
 
     @Test
@@ -51,14 +53,14 @@ public class TaskHandlerTest {
     }
 
     @Test
-    public void createTaskTest() {
+    public void createTaskTest() throws IOException, InterruptedException {
         // создаём задачу
         Task task = new Task("Test 2", "Testing task 2", LocalDateTime.now(), Duration.ofMinutes(5));
         // конвертируем её в JSON
         String taskJson = gson.toJson(task);
 
         // создаём HTTP-клиент и запрос
-        HttpClient client = HttpClient.newHttpClient();
+        // HttpClient client = HttpClient.newHttpClient();
         URI url = URI.create("http://localhost:8080/tasks");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
@@ -66,7 +68,7 @@ public class TaskHandlerTest {
                 .build();
 
         // вызываем рест, отвечающий за создание задач
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         // проверяем код ответа
         assertEquals(200, response.statusCode());
 
