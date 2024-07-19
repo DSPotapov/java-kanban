@@ -4,25 +4,26 @@ import components.Epic;
 import components.SubTask;
 import components.Task;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface TaskManager {
 
-    int createTask(Task newTask);
+    int createTask(Task newTask) throws IOException;
 
-    int createSubTask(SubTask newSubTask);
+    int createSubTask(SubTask newSubTask) throws IOException;
 
-    int createEpic(Epic newEpic);
+    int createEpic(Epic newEpic) throws IOException;
 
-    void updateTask(Task task);
+    void updateTask(Task task) throws IOException;
 
-    void updateSubTask(SubTask subTask);
+    void updateSubTask(SubTask subTask) throws IOException;
 
-    void deleteTask(int taskId);
+    void deleteTask(int taskId) throws IOException;
 
-    void deleteSubTask(int subTaskId);
+    void deleteSubTask(int subTaskId) throws IOException;
 
-    void deleteEpic(int epicId);
+    void deleteEpic(int epicId) throws IOException;
 
     boolean checkTimeInterception(Task task1, Task task2);
 

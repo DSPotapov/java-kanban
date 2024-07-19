@@ -19,30 +19,23 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         this.file = file;
     }
 
-    private void save() {
+    private void save() throws IOException {
         Map<Integer, String> taskMap = collectAllTasks();
         FileWriter writer = null;
-
-        try {
-            if (!file.exists()) {
-                throw new ManagerSaveException("По указаному пути нет файла.", file);
-            }
-            writer = new FileWriter(file);
-            writer.write("id,type,name,status,description,startTime,duration,epic\n");
-
-            for (Entry<Integer, String> entry : taskMap.entrySet()) {
-                writer.write(entry.getValue());
-                writer.write("\n");
-            }
-            writer.close();
-        } catch (ManagerSaveException e) {
-            System.out.println("Ошибка записи в файл: " + e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (!file.exists()) {
+            throw new ManagerSaveException("По указаному пути нет файла.", file);
         }
+        writer = new FileWriter(file);
+        writer.write("id,type,name,status,description,startTime,duration,epic\n");
+
+        for (Entry<Integer, String> entry : taskMap.entrySet()) {
+            writer.write(entry.getValue());
+            writer.write("\n");
+        }
+        writer.close();
     }
 
-    public static FileBackedTaskManager loadFromFile(File file) {
+    public static FileBackedTaskManager loadFromFile(File file) throws IOException {
         String tasksFromFile = "";
         try {
             if (!file.exists()) {
@@ -178,7 +171,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public int createTask(Task newTask) {
+    public int createTask(Task newTask) throws IOException {
         int result = super.createTask(newTask);
         if (result > 0) {
             save();
@@ -187,7 +180,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public int createSubTask(SubTask newSubTask) {
+    public int createSubTask(SubTask newSubTask) throws IOException {
         int result = super.createSubTask(newSubTask);
         if (result > 0) {
             save();
@@ -196,7 +189,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public int createEpic(Epic newEpic) {
+    public int createEpic(Epic newEpic) throws IOException {
         int result = super.createEpic(newEpic);
         if (result > 0) {
             save();
@@ -205,58 +198,31 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public Task getTaskById(int id) {
-        Task task = tasks.getOrDefault(id, null);
-        if (task != null) {
-            historyManager.add(task);
-        }
-        return task;
-    }
-
-    @Override
-    public SubTask getSubTaskById(int id) {
-        SubTask task = subTasks.getOrDefault(id, null);
-        if (task != null) {
-            historyManager.add(task);
-        }
-        return task;
-    }
-
-    @Override
-    public Epic getEpicById(int id) {
-        Epic task = epics.getOrDefault(id, null);
-        if (task != null) {
-            historyManager.add(task);
-        }
-        return task;
-    }
-
-    @Override
-    public void updateTask(Task task) {
+    public void updateTask(Task task) throws IOException {
         super.updateTask(task);
         save();
     }
 
     @Override
-    public void updateSubTask(SubTask subTask) {
+    public void updateSubTask(SubTask subTask) throws IOException {
         super.updateSubTask(subTask);
         save();
     }
 
     @Override
-    public void deleteTask(int taskId) {
+    public void deleteTask(int taskId) throws IOException {
         super.deleteTask(taskId);
         save();
     }
 
     @Override
-    public void deleteSubTask(int subTaskId) {
+    public void deleteSubTask(int subTaskId) throws IOException {
         super.deleteSubTask(subTaskId);
         save();
     }
 
     @Override
-    public void deleteEpic(int epicId) {
+    public void deleteEpic(int epicId) throws IOException {
         super.deleteEpic(epicId);
         save();
     }

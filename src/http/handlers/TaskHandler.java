@@ -3,6 +3,7 @@ package http.handlers;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import components.Task;
+import managers.ManagerSaveException;
 import managers.TaskManager;
 
 import java.io.IOException;
@@ -23,50 +24,80 @@ public class TaskHandler extends BaseHttpHandler {
 
         Endpoint endpoint = getEndpoint(exchange.getRequestURI().getPath(), exchange.getRequestMethod());
 
-        // TODO добавить проверки на пересечения задачи (CREATE_TASK, UPDATE_TASK) и отсутствие задачи (GET_TASK_BY_ID)
+        //TODO обработка ошибки при записи в файл
         switch (endpoint) {
             case GET_TASKS -> sendText(exchange, manager.getTasks().toString());
-
             case GET_TASK_BY_ID -> {
                 int id = Integer.parseInt(exchange.getRequestURI().getPath().split("/")[2]);
-                sendText(exchange, manager.getTaskById(id).toString());
+                Task task = manager.getTaskById(id);
+                if (task == null) {
+                    sendNotFound(exchange, "Задача " + id + " не найдена.");
+                    break;
+                }
+                sendText(exchange, task.toString());
             }
-
             case CREATE_TASK -> {
                 Task newTask = parseTask(exchange);
-                if (manager.createTask(newTask) == -1) {
-                    sendHasInteractions(exchange);
-                } else {
-                    manager.createTask(newTask);
-                    sendText(exchange, "Задача: " + newTask.toString() + " создана.");
+                try {
+                    if (manager.createTask(newTask) == -1) { // проверка на пересечение сдругими задачами
+                        sendHasInteractions(exchange);
+                    } else {
+                        manager.createTask(newTask);
+                        sendText(exchange, "Задача: " + newTask.toString() + " создана.");
+                    }
+                } catch (IOException e) {
+                    sendInternalServerError(exchange, e.getMessage());
                 }
             }
-
-            case UPDATE_TASK -> handlePostComments(exchange);
-            case DELETE_TASK -> handlePostComments(exchange);
-            default -> handlePostComments(exchange);
+            case UPDATE_TASK -> {
+                Task task = parseTask(exchange);
+                try {
+                    if (manager.getTasks().contains(task)) {
+                        manager.updateTask(task);
+                        sendOKStatus(exchange);
+                    } else { // задачу нельзя оновить, так как она еще не создана
+                        sendNotFound(
+                                exchange,
+                                "Задача " + task + " не найдена. Невозможно обновить несуществующую задачу");
+                    }
+                } catch (IOException e) {
+                    sendInternalServerError(exchange, e.getMessage());
+                }
+            }
+            case DELETE_TASK -> {
+                Task task = parseTask(exchange);
+                try {
+                    manager.deleteTask(task.getId());
+                    sendOKStatus(exchange);
+                } catch (IOException e) {
+                    sendInternalServerError(exchange, e.getMessage());
+                }
+            }
+            default -> sendNotFound(exchange, "Проверьте корректность запроса.");
         }
     }
 
     private Endpoint getEndpoint(String requestPath, String requestMethod) {
         String[] pathParts = requestPath.split("/");
 
-        if (requestMethod.equals("GET")) {
-            if (pathParts.length == 3) {
-                return Endpoint.GET_TASK_BY_ID;
-            } else {
-                return Endpoint.GET_TASKS;
+        switch (requestMethod) {
+            case "GET" -> {
+                if (pathParts.length == 3) {
+                    return Endpoint.GET_TASK_BY_ID;
+                } else {
+                    return Endpoint.GET_TASKS;
+                }
             }
-        }
-        if (requestMethod.equals("POST")) {
-            if (pathParts.length == 3) {
-                return Endpoint.UPDATE_TASK;
-            } else {
-                return Endpoint.CREATE_TASK;
+            case "POST" -> {
+                if (pathParts.length == 3) {
+                    return Endpoint.UPDATE_TASK;
+                } else {
+                    return Endpoint.CREATE_TASK;
+                }
             }
-        }
-        if (requestMethod.equals("DELETE")) {
-            return Endpoint.DELETE_TASK;
+            case "DELETE" -> {
+                return Endpoint.DELETE_TASK;
+            }
         }
         return Endpoint.UNKNOWN;
     }

@@ -30,6 +30,13 @@ public class BaseHttpHandler implements HttpHandler {
         h.close();
     }
 
+    protected void sendOKStatus(HttpExchange h) throws IOException {
+        final int responseCode = 201;
+        h.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
+        h.sendResponseHeaders(responseCode, 0);
+        h.close();
+    }
+
     protected void sendNotFound(HttpExchange h, String text) throws IOException {
         final int responseCode = 404;
         byte[] resp = text.getBytes(StandardCharsets.UTF_8);
@@ -46,6 +53,16 @@ public class BaseHttpHandler implements HttpHandler {
         h.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
         h.sendResponseHeaders(responseCode, 0);
         h.getResponseBody().write("Задача пересекается с другой".getBytes(StandardCharsets.UTF_8));
+        h.close();
+    }
+
+    protected void sendInternalServerError(HttpExchange h, String text) throws IOException {
+        final int responseCode = 500;
+
+        byte[] resp = text.getBytes(StandardCharsets.UTF_8);
+        h.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
+        h.sendResponseHeaders(responseCode, 0);
+        h.getResponseBody().write(resp);
         h.close();
     }
 }

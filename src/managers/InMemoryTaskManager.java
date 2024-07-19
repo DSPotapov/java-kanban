@@ -5,6 +5,7 @@ import components.SubTask;
 import components.Task;
 import components.TaskStatus;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -24,7 +25,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public int createTask(Task newTask) {
+    public int createTask(Task newTask) throws IOException {
 
         if (getPrioritizedTasks().stream().anyMatch(task -> checkTimeInterception(newTask, task))) {
             System.out.println("Время выполнения задачи пересекается с ранее созданной");
@@ -42,7 +43,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public int createSubTask(SubTask newSubTask) {
+    public int createSubTask(SubTask newSubTask) throws IOException {
 
         if (getPrioritizedTasks().stream().anyMatch(task -> checkTimeInterception(newSubTask, task))) {
             System.out.println("Время выполнения задачи пересекается с ранее созданной");
@@ -68,7 +69,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public int createEpic(Epic newEpic) {
+    public int createEpic(Epic newEpic) throws IOException {
         if (newEpic == null) {
             System.out.println("Ошибка, задачи не существует");
             return -1;
@@ -80,12 +81,12 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTask(Task task) {
+    public void updateTask(Task task) throws IOException {
         tasks.put(task.getId(), task);
     }
 
     @Override
-    public void updateSubTask(SubTask subTask) {
+    public void updateSubTask(SubTask subTask) throws IOException {
         subTasks.put(subTask.getId(), subTask);
         int epicId = subTask.getEpicId();
         checkoutEpicStatus(epicId);
@@ -237,13 +238,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteTask(int taskId) {
+    public void deleteTask(int taskId) throws IOException {
         tasks.remove(taskId);
         historyManager.remove(taskId);
     }
 
     @Override
-    public void deleteSubTask(int subTaskId) {
+    public void deleteSubTask(int subTaskId) throws IOException {
         SubTask subTask = subTasks.get(subTaskId);
         int epicId = subTask.getEpicId();
         Epic epic = epics.get(epicId);
@@ -258,7 +259,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteEpic(int epicId) {
+    public void deleteEpic(int epicId) throws IOException {
         Epic epic = epics.get(epicId);
         List<Integer> subTaskIds = epic.getSubTaskIds();
         for (int id : subTaskIds) {
