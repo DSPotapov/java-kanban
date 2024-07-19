@@ -1,5 +1,6 @@
 package http;
 
+import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import http.handlers.*;
@@ -14,28 +15,32 @@ public class HttpTaskServer {
     private static final int PORT = 8080;
     HttpServer httpServer;
 
-    public HttpTaskServer() throws IOException {
-        httpServer = HttpServer.create(new InetSocketAddress(PORT), 0);
-    }
-
-    public HttpTaskServer(int port) throws IOException {
+    public HttpTaskServer(TaskManager manager, int port) throws IOException {
         httpServer = HttpServer.create(new InetSocketAddress(port), 0);
+
+        httpServer.createContext("/tasks", new TaskHandler(manager));
+        httpServer.createContext("/subtasks", new SubTaskHandler(manager));
+        httpServer.createContext("/epics", new EpicHandler(manager));
+        httpServer.createContext("/history", new HistoryHandler(manager));
+        httpServer.createContext("/prioritized", new PrioritizedHandler(manager));
     }
 
-
+    public HttpTaskServer(TaskManager manager) throws IOException {
+        this(manager, PORT);
+    }
+    
     public static void main(String[] args) throws IOException {
-        HttpTaskServer httpTaskServer = new HttpTaskServer();
+
         File file = File.createTempFile("temp", "csv");
         TaskManager manager = Managers.getFileBackedTaskManager(file);
-
-        httpTaskServer.createContext("/tasks", new TaskHandler(manager));
-        httpTaskServer.createContext("/subtasks", new SubTaskHandler(manager));
-        httpTaskServer.createContext("/epics", new EpicHandler(manager));
-        httpTaskServer.createContext("/history", new HistoryHandler(manager));
-        httpTaskServer.createContext("/prioritized", new PrioritizedHandler(manager));
+        HttpTaskServer httpTaskServer = new HttpTaskServer(manager);
 
         httpTaskServer.start();
         System.out.println("HTTP-сервер запущен на " + PORT + " порту!");
+    }
+
+    public static Gson getGson() {
+        return new Gson();
     }
 
     public void start() {
@@ -44,9 +49,5 @@ public class HttpTaskServer {
 
     public void stop() {
         httpServer.stop(0);
-    }
-
-    public void createContext(String path, HttpHandler handler) {
-        httpServer.createContext(path, handler);
     }
 }

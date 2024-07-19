@@ -71,7 +71,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int createEpic(Epic newEpic) throws IOException {
         if (newEpic == null) {
-            System.out.println("Ошибка, задачи не существует");
+             System.out.println("Ошибка, задачи не существует");
             return -1;
         }
         int id = idGenerator();
@@ -268,6 +268,12 @@ public class InMemoryTaskManager implements TaskManager {
         }
         epics.remove(epicId);
         historyManager.remove(epicId);
+    }
+
+    public void clearAllTasks(){
+        tasks.clear();
+        subTasks.clear();
+        epics.clear();
     }
 
 }

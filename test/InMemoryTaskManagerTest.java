@@ -7,6 +7,7 @@ import managers.TaskManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.Duration;
 import java.util.List;
@@ -25,7 +26,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void addNewTaskTest() {
+    void addNewTaskTest() throws IOException {
         Task task = new Task("Test addNewTask", "Test addNewTask description");
         final int taskId = taskManager.createTask(task);
         final Task savedTask = taskManager.getTaskById(taskId);
@@ -41,7 +42,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void addNewSubTaskTest() {
+    void addNewSubTaskTest() throws IOException {
         Epic epic = new Epic(
                 "Test addNewEpic",
                 "Test addNewEpic description");
@@ -64,7 +65,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void addNewEpicTest() {
+    public void addNewEpicTest() throws IOException {
         Epic epic = new Epic("Test addNewEpic", "Test addNewEpic description");
         final int taskId = taskManager.createEpic(epic);
         final Epic savedTask = taskManager.getEpicById(taskId);
@@ -80,7 +81,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void updateTaskTest() {
+    public void updateTaskTest() throws IOException {
         Task task = new Task("task for updateTaskTest", "testing task for updateTaskTest");
         taskManager.createTask(task);
         int id = task.getId();
@@ -93,22 +94,22 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void taskShouldNotBeNull() {
+    public void taskShouldNotBeNull() throws IOException {
         assertEquals(-1, taskManager.createTask(null), "Пустая задача не может быть добавлена");
     }
 
     @Test
-    public void subTaskShouldNotBeNull() {
+    public void subTaskShouldNotBeNull() throws IOException {
         assertEquals(-1, taskManager.createSubTask(null), "Пустая задача не может быть добавлена");
     }
 
     @Test
-    public void epicShouldNotBeNull() {
+    public void epicShouldNotBeNull() throws IOException {
         assertEquals(-1, taskManager.createEpic(null), "Пустая задача не может быть добавлена");
     }
 
     @Test
-    public void shouldAddAndDeleteSubTask() {
+    public void shouldAddAndDeleteSubTask() throws IOException {
         Epic epic = new Epic("epic for test", "testing epic");
         taskManager.createEpic(epic);
         SubTask subTask = new SubTask("subtask for epic", "testing subtask", epic.getId());
@@ -120,7 +121,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void checkoutEpicStatusTest() {
+    public void checkoutEpicStatusTest() throws IOException {
         LocalDateTime startTime = LocalDateTime.now();
         Epic epic = new Epic("epic for test", "testing epic", 1);
         taskManager.createEpic(epic);
