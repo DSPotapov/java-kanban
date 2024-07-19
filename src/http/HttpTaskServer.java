@@ -2,7 +2,6 @@ package http;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import http.handlers.*;
 import managers.Managers;
@@ -46,7 +45,7 @@ public class HttpTaskServer {
         return new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(Duration.class, new DurationAdapter())
-                .registerTypeAdapter(LocalDateTime.class, new LocalDatetTimeAdapter())
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .create();
     }
 

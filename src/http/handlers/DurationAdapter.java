@@ -1,4 +1,4 @@
-package http;
+package http.handlers;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
@@ -6,6 +6,7 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.time.format.DateTimeFormatter;
 
 public class DurationAdapter extends TypeAdapter<Duration> {
     @Override
