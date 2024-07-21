@@ -38,10 +38,11 @@ public class HttpTaskServer {
         HttpTaskServer httpTaskServer = new HttpTaskServer(manager);
 
         httpTaskServer.start();
-        System.out.println("HTTP-сервер запущен на " + PORT + " порту!");
+        System.out.println("HTTP-СЃРµСЂРІРµСЂ Р·Р°РїСѓС‰РµРЅ РЅР° " + PORT + " РїРѕСЂС‚Сѓ!");
     }
 
     public static Gson getGson() {
+        System.out.println("getGson, HttpTaskServer");
         return new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(Duration.class, new DurationAdapter())

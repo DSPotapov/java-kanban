@@ -54,31 +54,33 @@ public class TaskHandlerTest {
 
     @Test
     public void createTaskTest() throws IOException, InterruptedException {
-        // создаём задачу
-        Task task = new Task("Test 2", "Testing task 2", LocalDateTime.now(), Duration.ofMinutes(5));
-        // конвертируем её в JSON
+        // СЃРѕР·РґР°С‘Рј Р·Р°РґР°С‡Сѓ
+        Task task = new Task("Test 2", "Testing task 2");
+        // РєРѕРЅРІРµСЂС‚РёСЂСѓРµРј РµС‘ РІ JSON
         String taskJson = gson.toJson(task);
         System.out.println("taskJson = " + taskJson);
 
-        // создаём HTTP-клиент и запрос
+        // СЃРѕР·РґР°С‘Рј HTTP-РєР»РёРµРЅС‚ Рё Р·Р°РїСЂРѕСЃ
         // HttpClient client = HttpClient.newHttpClient();
         URI url = URI.create("http://localhost:8080/tasks");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
+                .version(HttpClient.Version.HTTP_1_1)
                 .POST(HttpRequest.BodyPublishers.ofString(taskJson))
+                .header("Content-Type", "application/json")
                 .build();
 
-        // вызываем рест, отвечающий за создание задач
+        // РІС‹Р·С‹РІР°РµРј СЂРµСЃС‚, РѕС‚РІРµС‡Р°СЋС‰РёР№ Р·Р° СЃРѕР·РґР°РЅРёРµ Р·Р°РґР°С‡
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        // проверяем код ответа
+        // РїСЂРѕРІРµСЂСЏРµРј РєРѕРґ РѕС‚РІРµС‚Р°
         assertEquals(200, response.statusCode());
 
-        // проверяем, что создалась одна задача с корректным именем
+        // РїСЂРѕРІРµСЂСЏРµРј, С‡С‚Рѕ СЃРѕР·РґР°Р»Р°СЃСЊ РѕРґРЅР° Р·Р°РґР°С‡Р° СЃ РєРѕСЂСЂРµРєС‚РЅС‹Рј РёРјРµРЅРµРј
         List<Task> tasksFromManager = manager.getTasks();
 
-        assertNotNull(tasksFromManager, "Задачи не возвращаются");
-        assertEquals(1, tasksFromManager.size(), "Некорректное количество задач");
-        assertEquals("Test 2", tasksFromManager.get(0).getName(), "Некорректное имя задачи");
+        assertNotNull(tasksFromManager, "Р—Р°РґР°С‡Рё РЅРµ РІРѕР·РІСЂР°С‰Р°СЋС‚СЃСЏ");
+        assertEquals(1, tasksFromManager.size(), "РќРµРєРѕСЂСЂРµРєС‚РЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РґР°С‡");
+        assertEquals("Test 2", tasksFromManager.get(0).getName(), "РќРµРєРѕСЂСЂРµРєС‚РЅРѕРµ РёРјСЏ Р·Р°РґР°С‡Рё");
     }
 
     @Test
