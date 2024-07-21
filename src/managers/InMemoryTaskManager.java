@@ -86,6 +86,11 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
+    public void updateEpic(Epic epic) throws IOException {
+        epics.put(epic.getId(), epic);
+    }
+
+    @Override
     public void updateSubTask(SubTask subTask) throws IOException {
         subTasks.put(subTask.getId(), subTask);
         int epicId = subTask.getEpicId();
@@ -208,6 +213,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTaskById(int id) {
+//        TODO добавить Optional
         Task task = tasks.getOrDefault(id, null);
         if (task != null) {
             historyManager.add(task);
@@ -274,6 +280,7 @@ public class InMemoryTaskManager implements TaskManager {
         tasks.clear();
         subTasks.clear();
         epics.clear();
+        taskId = 1;
     }
 
 }

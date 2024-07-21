@@ -43,14 +43,11 @@ public class TaskHandler extends BaseHttpHandler {
             case CREATE_TASK -> {
                 System.out.println("CREATE_TASK");
                 Task newTask = parseTask(exchange);
-                System.out.println(newTask.toString());
                 try {
                     if (manager.createTask(newTask) == -1) {
-                        System.out.println("manager.createTask(newTask) == -1");
                         sendHasInteractions(exchange);
                     } else {
                         System.out.println("создаем задачу");
-                        manager.createTask(newTask);
                         sendText(exchange, "Задача: " + newTask.toString() + " создана.");
                     }
                 } catch (IOException e) {
@@ -60,8 +57,9 @@ public class TaskHandler extends BaseHttpHandler {
             case UPDATE_TASK -> {
                 System.out.println("UPDATE_TASK");
                 Task task = parseTask(exchange);
+
                 try {
-                    if (manager.getTasks().contains(task)) {
+                    if (manager.getTaskById(task.getId()) != null) {
                         manager.updateTask(task);
                         sendOKStatus(exchange);
                     } else {
@@ -113,17 +111,14 @@ public class TaskHandler extends BaseHttpHandler {
     }
 
     protected Task parseTask(HttpExchange exchange) throws IOException {
-        System.out.println(" parseTask ");
         InputStream inputStream = exchange.getRequestBody();
         String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
-        System.out.println("body = " + body);
         Task task = null;
         try {
             task = gson.fromJson(body, Task.class);
         } catch(Exception e){
-            System.out.println("что-то сломалось " + e.getClass() + e.getMessage());
+            System.out.println("Сериализация Task сломалась " + e.getClass() + e.getMessage());
         }
-        System.out.println("task.toString() = " + task.toString());
         return task;
     }
 }

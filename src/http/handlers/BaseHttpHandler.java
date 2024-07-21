@@ -6,7 +6,6 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import com.google.gson.Gson;
 import managers.TaskManager;
 
 public class BaseHttpHandler implements HttpHandler {
@@ -38,6 +37,7 @@ public class BaseHttpHandler implements HttpHandler {
     }
 
     protected void sendNotFound(HttpExchange h, String text) throws IOException {
+        System.out.println("sendNotFound " + text);
         final int responseCode = 404;
         byte[] resp = text.getBytes(StandardCharsets.UTF_8);
         h.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");

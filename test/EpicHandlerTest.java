@@ -1,4 +1,5 @@
 import com.google.gson.Gson;
+import components.Epic;
 import components.Task;
 import components.TaskStatus;
 import components.TaskType;
@@ -19,13 +20,14 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TaskHandlerTest {
+public class EpicHandlerTest {
     HttpTaskServer httpTaskServer;
     TaskManager manager;
     HttpClient httpClient;
     Gson gson = HttpTaskServer.getGson();
+    String path = "http://localhost:8080/epics";
 
-    public TaskHandlerTest() throws IOException {
+    public EpicHandlerTest() throws IOException {
         manager = Managers.getDefault();
         httpTaskServer = new HttpTaskServer(manager, 8080);
         httpClient = HttpClient.newHttpClient();
@@ -51,15 +53,15 @@ public class TaskHandlerTest {
     }
 
     @Test
-    public void createTaskTest() throws IOException, InterruptedException {
+    public void createEpicsTest() throws IOException, InterruptedException {
         // создаём задачу
-        Task task = new Task("Test 2", "Testing task 2");
+        Epic epic = new Epic("Test 2", "Testing epic 2", 1);
         // конвертируем её в JSON
-        String taskJson = gson.toJson(task);
+        String taskJson = gson.toJson(epic);
         System.out.println("taskJson = " + taskJson);
 
         // создаём HTTP-клиент и запрос
-        URI url = URI.create("http://localhost:8080/tasks");
+        URI url = URI.create(path);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
                 .version(HttpClient.Version.HTTP_1_1)
@@ -73,7 +75,8 @@ public class TaskHandlerTest {
         assertEquals(200, response.statusCode());
 
         // проверяем, что создалась одна задача с корректным именем
-        List<Task> tasksFromManager = manager.getTasks();
+        List<Epic> tasksFromManager = manager.getEpics();
+        System.out.println("tasksFromManager = " + tasksFromManager);
 
         assertNotNull(tasksFromManager, "Задачи не возвращаются");
         assertEquals(1, tasksFromManager.size(), "Некорректное количество задач");
@@ -81,14 +84,14 @@ public class TaskHandlerTest {
     }
 
     @Test
-    public void updateTasksTest() throws IOException, InterruptedException {
+    public void updateEpicsTest() throws IOException, InterruptedException {
         // создаём задачу
-        Task task = new Task("Test 2", "Testing task 2", 1);
+        Epic epic = new Epic("Test 2", "Testing epic 2", 1);
         // конвертируем её в JSON
-        String taskJson = gson.toJson(task);
+        String taskJson = gson.toJson(epic);
 
         // создаём HTTP-клиент и запрос
-        URI url = URI.create("http://localhost:8080/tasks");
+        URI url = URI.create(path);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
                 .version(HttpClient.Version.HTTP_1_1)
@@ -101,12 +104,11 @@ public class TaskHandlerTest {
         // проверяем код ответа
         assertEquals(200, response.statusCode());
 
-        Task updateTask = new Task("Test 223", "Testing task 223", task.getId());
-        updateTask.setTaskStatus(TaskStatus.DONE);
+        Epic updateTask = new Epic("Test 223", "Testing epic 223", epic.getId());
 
         taskJson = gson.toJson(updateTask);
 
-        url = URI.create("http://localhost:8080/tasks/" + task.getId());
+        url = URI.create(path + "/" + epic.getId());
         request = HttpRequest.newBuilder()
                 .uri(url)
                 .version(HttpClient.Version.HTTP_1_1)
@@ -122,28 +124,22 @@ public class TaskHandlerTest {
                 "неверный статус при обновлении задачи");
 
         // проверяем, что создалась одна задача с корректным именем
-        List<Task> tasksFromManager = manager.getTasks();
+        List<Epic> tasksFromManager = manager.getEpics();
 
         assertEquals(1,
                 tasksFromManager.size(),
                 "Некорректное количество задач");
 
-        Optional<Task> findTask = tasksFromManager.stream()
-                .filter(el -> el.getId() == task.getId())
+        Optional<Epic> findTask = tasksFromManager.stream()
+                .filter(el -> el.getId() == epic.getId())
                 .findFirst();
         assertTrue(findTask.isPresent());
-
-        assertEquals(TaskType.TASK, findTask.get().getTaskType(), "Тип задачи не совпадает");
 
         assertEquals("Test 223",
                 findTask.get().getName(),
                 "Некорректное имя задачи");
 
-        assertEquals(TaskStatus.DONE,
-                findTask.get().getTaskStatus(),
-                "Некорректное состояние задачи задачи");
-
-        assertEquals("Testing task 223",
+        assertEquals("Testing epic 223",
                 findTask.get().getDescription(),
                 "Некорректное описание задачи");
     }
@@ -157,3 +153,4 @@ public class TaskHandlerTest {
     }
 
 }
+

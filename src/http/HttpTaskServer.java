@@ -42,7 +42,6 @@ public class HttpTaskServer {
     }
 
     public static Gson getGson() {
-        System.out.println("getGson, HttpTaskServer");
         return new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(Duration.class, new DurationAdapter())

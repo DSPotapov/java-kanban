@@ -46,4 +46,6 @@ public interface TaskManager {
     List<Task> getHistory();
 
     void clearAllTasks();
+
+    void updateEpic(Epic epic) throws IOException;
 }
