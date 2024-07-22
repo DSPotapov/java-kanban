@@ -36,7 +36,7 @@ public class SubTaskHandler extends BaseHttpHandler {
                 int id = Integer.parseInt(exchange.getRequestURI().getPath().split("/")[2]);
                 SubTask subTask = manager.getSubTaskById(id);
                 if (subTask == null) {
-                    sendNotFound(exchange, "Задача " + id + " не найдена.");
+                    sendNotFound(exchange, "Р—Р°РґР°С‡Р° " + id + " РЅРµ РЅР°Р№РґРµРЅР°.");
                     break;
                 }
                 sendText(exchange, subTask.toString());
@@ -50,11 +50,11 @@ public class SubTaskHandler extends BaseHttpHandler {
                         System.out.println("manager.createSubTask(newSubTask) == -1");
                         sendHasInteractions(exchange);
                     } else {
-                        System.out.println("создаем подзадачу");
-                        sendText(exchange, "Задача: " + newSubTask.toString() + " создана.");
+                        System.out.println("СЃРѕР·РґР°РµРј РїРѕРґР·Р°РґР°С‡Сѓ");
+                        sendText(exchange, "Р—Р°РґР°С‡Р°: " + newSubTask.toString() + " СЃРѕР·РґР°РЅР°.");
                     }
-                } catch (IOException e) {
-                    sendInternalServerError(exchange, "Ошибка при добавлении задачи: " + e.getMessage());
+                } catch (Exception e) {
+                    sendInternalServerError(exchange, "РћС€РёР±РєР° РїСЂРё РґРѕР±Р°РІР»РµРЅРёРё Р·Р°РґР°С‡Рё: " + e.getClass() + e.getMessage());
                 }
             }
             case UPDATE_SUBTASK -> {
@@ -68,7 +68,7 @@ public class SubTaskHandler extends BaseHttpHandler {
                     } else {
                         sendNotFound(
                                 exchange,
-                                "Задача " + subTask + " не существует.");
+                                "Р—Р°РґР°С‡Р° " + subTask + " РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚.");
                     }
                 } catch (IOException e) {
                     sendInternalServerError(exchange, e.getMessage());
@@ -84,7 +84,7 @@ public class SubTaskHandler extends BaseHttpHandler {
                     sendInternalServerError(exchange, e.getMessage());
                 }
             }
-            default -> sendNotFound(exchange, "Проверьте корректность запроса.");
+            default -> sendNotFound(exchange, "РџСЂРѕРІРµСЂСЊС‚Рµ РєРѕСЂСЂРµРєС‚РЅРѕСЃС‚СЊ Р·Р°РїСЂРѕСЃР°.");
         }
     }
 
@@ -114,7 +114,6 @@ public class SubTaskHandler extends BaseHttpHandler {
     }
 
     protected SubTask parseSubTask(HttpExchange exchange) throws IOException {
-        System.out.println("parseSubTask");
         InputStream inputStream = exchange.getRequestBody();
 
         String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
@@ -122,7 +121,7 @@ public class SubTaskHandler extends BaseHttpHandler {
         try {
             subTask = gson.fromJson(body, SubTask.class);
         } catch (Exception e) {
-            System.out.println("Сериализация SubTask сломалась " + e.getClass() + e.getMessage());
+            System.out.println("РЎРµСЂРёР°Р»РёР·Р°С†РёСЏ SubTask СЃР»РѕРјР°Р»Р°СЃСЊ " + e.getClass() + e.getMessage());
         }
         return subTask;
     }

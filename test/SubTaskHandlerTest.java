@@ -51,14 +51,12 @@ public class SubTaskHandlerTest {
 
     @Test
     public void createSubTaskTest() throws IOException, InterruptedException {
-        // создаём задачу
-        SubTask subTask = new SubTask("Test 2", "Testing subtask 2", 2,1);
-        // конвертируем её в JSON
-        String taskJson = gson.toJson(subTask);
+        Epic epic = new Epic("Epic 1", "Testing epic 1", 1);
+        String taskJson = gson.toJson(epic);
         System.out.println("taskJson = " + taskJson);
 
-        // создаём HTTP-клиент и запрос
-        URI url = URI.create(path);
+        // СЃРѕР·РґР°С‘Рј HTTP-РєР»РёРµРЅС‚ Рё Р·Р°РїСЂРѕСЃ
+        URI url = URI.create("http://localhost:8080/epics");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
                 .version(HttpClient.Version.HTTP_1_1)
@@ -66,29 +64,46 @@ public class SubTaskHandlerTest {
                 .header("Content-Type", "application/json")
                 .build();
 
-        // вызываем рест, отвечающий за создание задач
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        // проверяем код ответа
+        // РїСЂРѕРІРµСЂСЏРµРј РєРѕРґ РѕС‚РІРµС‚Р°
         assertEquals(200, response.statusCode());
 
-        // проверяем, что создалась одна задача с корректным именем
-        List<SubTask> tasksFromManager = manager.getSubTasks();
-        System.out.println("tasksFromManager = " + tasksFromManager);
+        SubTask subTask = new SubTask("Test 2", "Testing subtask 2", 2,1);
+        // РєРѕРЅРІРµСЂС‚РёСЂСѓРµРј РµС‘ РІ JSON
+        taskJson = gson.toJson(subTask);
+        System.out.println("taskJson = " + taskJson);
 
-        assertNotNull(tasksFromManager, "Задачи не возвращаются");
-        assertEquals(1, tasksFromManager.size(), "Некорректное количество задач");
-        assertEquals("Test 2", tasksFromManager.get(0).getName(), "Некорректное имя задачи");
+        // СЃРѕР·РґР°С‘Рј HTTP-РєР»РёРµРЅС‚ Рё Р·Р°РїСЂРѕСЃ
+        url = URI.create(path);
+        request = HttpRequest.newBuilder()
+                .uri(url)
+                .version(HttpClient.Version.HTTP_1_1)
+                .POST(HttpRequest.BodyPublishers.ofString(taskJson))
+                .header("Content-Type", "application/json")
+                .build();
+
+        // РІС‹Р·С‹РІР°РµРј СЂРµСЃС‚, РѕС‚РІРµС‡Р°СЋС‰РёР№ Р·Р° СЃРѕР·РґР°РЅРёРµ Р·Р°РґР°С‡
+        response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        // РїСЂРѕРІРµСЂСЏРµРј РєРѕРґ РѕС‚РІРµС‚Р°
+        assertEquals(200, response.statusCode());
+
+        // РїСЂРѕРІРµСЂСЏРµРј, С‡С‚Рѕ СЃРѕР·РґР°Р»Р°СЃСЊ РѕРґРЅР° Р·Р°РґР°С‡Р° СЃ РєРѕСЂСЂРµРєС‚РЅС‹Рј РёРјРµРЅРµРј
+        List<SubTask> tasksFromManager = manager.getSubTasks();
+
+        assertNotNull(tasksFromManager, "Р—Р°РґР°С‡Рё РЅРµ РІРѕР·РІСЂР°С‰Р°СЋС‚СЃСЏ");
+        assertEquals(1, tasksFromManager.size(), "РќРµРєРѕСЂСЂРµРєС‚РЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РґР°С‡");
+        assertEquals("Test 2", tasksFromManager.get(0).getName(), "РќРµРєРѕСЂСЂРµРєС‚РЅРѕРµ РёРјСЏ Р·Р°РґР°С‡Рё");
     }
 
     @Test
     public void updateSubTaskTest() throws IOException, InterruptedException {
-        // создаём задачу
-        SubTask subTask = new SubTask("Test 2", "Testing subTask 2", 2, 1);
-        // конвертируем её в JSON
-        String taskJson = gson.toJson(subTask);
 
-        // создаём HTTP-клиент и запрос
-        URI url = URI.create(path);
+        Epic epic = new Epic("Epic 1", "Testing epic 1", 1);
+        String taskJson = gson.toJson(epic);
+        System.out.println("taskJson = " + taskJson);
+
+        // СЃРѕР·РґР°С‘Рј HTTP-РєР»РёРµРЅС‚ Рё Р·Р°РїСЂРѕСЃ
+        URI url = URI.create("http://localhost:8080/epics");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
                 .version(HttpClient.Version.HTTP_1_1)
@@ -96,12 +111,29 @@ public class SubTaskHandlerTest {
                 .header("Content-Type", "application/json")
                 .build();
 
-        // вызываем рест, отвечающий за создание задач
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        // проверяем код ответа
+        // РїСЂРѕРІРµСЂСЏРµРј РєРѕРґ РѕС‚РІРµС‚Р°
+        assertEquals(200, response.statusCode());
+        // СЃРѕР·РґР°С‘Рј Р·Р°РґР°С‡Сѓ
+        SubTask subTask = new SubTask("Test 2", "Testing subTask 2", 2, 1);
+        // РєРѕРЅРІРµСЂС‚РёСЂСѓРµРј РµС‘ РІ JSON
+        taskJson = gson.toJson(subTask);
+
+        // СЃРѕР·РґР°С‘Рј HTTP-РєР»РёРµРЅС‚ Рё Р·Р°РїСЂРѕСЃ
+        url = URI.create(path);
+        request = HttpRequest.newBuilder()
+                .uri(url)
+                .version(HttpClient.Version.HTTP_1_1)
+                .POST(HttpRequest.BodyPublishers.ofString(taskJson))
+                .header("Content-Type", "application/json")
+                .build();
+
+        // РІС‹Р·С‹РІР°РµРј СЂРµСЃС‚, РѕС‚РІРµС‡Р°СЋС‰РёР№ Р·Р° СЃРѕР·РґР°РЅРёРµ Р·Р°РґР°С‡
+        response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        // РїСЂРѕРІРµСЂСЏРµРј РєРѕРґ РѕС‚РІРµС‚Р°
         assertEquals(200, response.statusCode());
 
-        SubTask updateTask = new SubTask("Test 223", "Testing subTask 223", subTask.getId());
+        SubTask updateTask = new SubTask("Test 223", "Testing subTask 223", subTask.getId(), epic.getId());
 
         taskJson = gson.toJson(updateTask);
 
@@ -113,19 +145,19 @@ public class SubTaskHandlerTest {
                 .header("Content-Type", "application/json")
                 .build();
 
-        // вызываем рест, отвечающий за создание задач
+        // РІС‹Р·С‹РІР°РµРј СЂРµСЃС‚, РѕС‚РІРµС‡Р°СЋС‰РёР№ Р·Р° СЃРѕР·РґР°РЅРёРµ Р·Р°РґР°С‡
         response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        // проверяем код ответа
+        // РїСЂРѕРІРµСЂСЏРµРј РєРѕРґ РѕС‚РІРµС‚Р°
         assertEquals(201,
                 response.statusCode(),
-                "неверный статус при обновлении задачи");
+                "РЅРµРІРµСЂРЅС‹Р№ СЃС‚Р°С‚СѓСЃ РїСЂРё РѕР±РЅРѕРІР»РµРЅРёРё Р·Р°РґР°С‡Рё");
 
-        // проверяем, что создалась одна задача с корректным именем
+        // РїСЂРѕРІРµСЂСЏРµРј, С‡С‚Рѕ СЃРѕР·РґР°Р»Р°СЃСЊ РѕРґРЅР° Р·Р°РґР°С‡Р° СЃ РєРѕСЂСЂРµРєС‚РЅС‹Рј РёРјРµРЅРµРј
         List<SubTask> tasksFromManager = manager.getSubTasks();
 
         assertEquals(1,
                 tasksFromManager.size(),
-                "Некорректное количество задач");
+                "РќРµРєРѕСЂСЂРµРєС‚РЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РґР°С‡");
 
         Optional<SubTask> findTask = tasksFromManager.stream()
                 .filter(el -> el.getId() == subTask.getId())
@@ -134,11 +166,11 @@ public class SubTaskHandlerTest {
 
         assertEquals("Test 223",
                 findTask.get().getName(),
-                "Некорректное имя задачи");
+                "РќРµРєРѕСЂСЂРµРєС‚РЅРѕРµ РёРјСЏ Р·Р°РґР°С‡Рё");
 
-        assertEquals("Testing epic 223",
+        assertEquals("Testing subTask 223",
                 findTask.get().getDescription(),
-                "Некорректное описание задачи");
+                "РќРµРєРѕСЂСЂРµРєС‚РЅРѕРµ РѕРїРёСЃР°РЅРёРµ Р·Р°РґР°С‡Рё");
     }
 
     @Test

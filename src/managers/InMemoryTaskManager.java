@@ -58,7 +58,12 @@ public class InMemoryTaskManager implements TaskManager {
         int id = idGenerator();
         newSubTask.setId(id);
         subTasks.put(id, newSubTask);
-        Epic epic = epics.get(newSubTask.getEpicId());
+
+        Epic epic = epics.getOrDefault(newSubTask.getEpicId(), null);
+        if (epic == null){
+            throw new IOException("Эпик с id: " + newSubTask.getEpicId() + " не найден");
+        }
+
         epic.addSubTaskId(id);
         if (TaskStatus.DONE.equals(epic.getTaskStatus())) {
             epic.setTaskStatus(TaskStatus.NEW);
