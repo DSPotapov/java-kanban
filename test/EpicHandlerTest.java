@@ -49,7 +49,40 @@ public class EpicHandlerTest {
     }
 
     @Test
-    public void getTaskByIdTest() {
+    public void getEpicByIdTest() throws IOException, InterruptedException {
+        Epic epic = new Epic("Test 1", "Testing epic 1", 1);
+        // конвертируем её в JSON
+        String taskJson = gson.toJson(epic);
+        System.out.println("taskJson = " + taskJson);
+
+        // создаём HTTP-клиент и запрос
+        URI url = URI.create(path + "epics");
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(url)
+                .version(HttpClient.Version.HTTP_1_1)
+                .POST(HttpRequest.BodyPublishers.ofString(taskJson))
+                .header("Content-Type", "application/json")
+                .build();
+
+        // вызываем рест, отвечающий за создание задач
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        // проверяем код ответа
+        assertEquals(200, response.statusCode());
+
+        url = URI.create(path + "epics/" + epic.getId());
+        request = HttpRequest.newBuilder()
+                .uri(url)
+                .version(HttpClient.Version.HTTP_1_1)
+                .GET()
+                .header("Content-Type", "application/json")
+                .build();
+
+        // вызываем рест, отвечающий за создание задач
+        response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        // проверяем код ответа
+        assertEquals(200, response.statusCode());
+        Epic responseEpic = gson.fromJson(response.body(), Epic.class);
+        assertEquals(epic, responseEpic, "Задачи не совпадают");
     }
 
     @Test

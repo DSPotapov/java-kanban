@@ -38,7 +38,7 @@ public class EpicHandler extends BaseHttpHandler {
                     sendNotFound(exchange, "Задача " + id + " не найдена.");
                     break;
                 }
-                sendText(exchange, epic.toString());
+                sendText(exchange, gson.toJson(epic));
             }
             case CREATE_EPIC -> {
                 System.out.println("CREATE_EPIC");

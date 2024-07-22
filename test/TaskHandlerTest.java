@@ -24,6 +24,7 @@ public class TaskHandlerTest {
     TaskManager manager;
     HttpClient httpClient;
     Gson gson = HttpTaskServer.getGson();
+    String path = "http://localhost:8080/";
 
     public TaskHandlerTest() throws IOException {
         manager = Managers.getDefault();
@@ -44,10 +45,44 @@ public class TaskHandlerTest {
 
     @Test
     public void getTasksTest() {
+
     }
 
     @Test
-    public void getTaskByIdTest() {
+    public void getTaskByIdTest() throws IOException, InterruptedException {
+        Task task = new Task("Test 2", "Testing task 2", 1);
+        // конвертируем её в JSON
+        String taskJson = gson.toJson(task);
+        System.out.println("taskJson = " + taskJson);
+
+        // создаём HTTP-клиент и запрос
+        URI url = URI.create(path + "tasks");
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(url)
+                .version(HttpClient.Version.HTTP_1_1)
+                .POST(HttpRequest.BodyPublishers.ofString(taskJson))
+                .header("Content-Type", "application/json")
+                .build();
+
+        // вызываем рест, отвечающий за создание задач
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        // проверяем код ответа
+        assertEquals(200, response.statusCode());
+
+        url = URI.create(path + "tasks/" + task.getId());
+        request = HttpRequest.newBuilder()
+                .uri(url)
+                .version(HttpClient.Version.HTTP_1_1)
+                .GET()
+                .header("Content-Type", "application/json")
+                .build();
+
+        // вызываем рест, отвечающий за создание задач
+        response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        // проверяем код ответа
+        assertEquals(200, response.statusCode());
+        Task responseTask = gson.fromJson(response.body(), Task.class);
+        assertEquals(task, responseTask, "Задачи не совпадают");
     }
 
     @Test
@@ -59,7 +94,7 @@ public class TaskHandlerTest {
         System.out.println("taskJson = " + taskJson);
 
         // создаём HTTP-клиент и запрос
-        URI url = URI.create("http://localhost:8080/tasks");
+        URI url = URI.create(path + "tasks");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
                 .version(HttpClient.Version.HTTP_1_1)
@@ -88,7 +123,7 @@ public class TaskHandlerTest {
         String taskJson = gson.toJson(task);
 
         // создаём HTTP-клиент и запрос
-        URI url = URI.create("http://localhost:8080/tasks");
+        URI url = URI.create(path + "tasks");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
                 .version(HttpClient.Version.HTTP_1_1)
@@ -106,7 +141,7 @@ public class TaskHandlerTest {
 
         taskJson = gson.toJson(updateTask);
 
-        url = URI.create("http://localhost:8080/tasks/" + task.getId());
+        url = URI.create(path + "tasks/" + task.getId());
         request = HttpRequest.newBuilder()
                 .uri(url)
                 .version(HttpClient.Version.HTTP_1_1)
@@ -132,7 +167,6 @@ public class TaskHandlerTest {
                 .filter(el -> el.getId() == task.getId())
                 .findFirst();
         assertTrue(findTask.isPresent());
-
         assertEquals(TaskType.TASK, findTask.get().getTaskType(), "Тип задачи не совпадает");
 
         assertEquals("Test 223",

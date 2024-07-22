@@ -39,7 +39,7 @@ public class SubTaskHandler extends BaseHttpHandler {
                     sendNotFound(exchange, "Задача " + id + " не найдена.");
                     break;
                 }
-                sendText(exchange, subTask.toString());
+                sendText(exchange, gson.toJson(subTask));
             }
             case CREATE_SUBTASK -> {
                 System.out.println("CREATE_SUBTASK");

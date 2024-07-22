@@ -38,7 +38,7 @@ public class TaskHandler extends BaseHttpHandler {
                     sendNotFound(exchange, "Задача " + id + " не найдена.");
                     break;
                 }
-                sendText(exchange, task.toString());
+                sendText(exchange, gson.toJson(task));
             }
             case CREATE_TASK -> {
                 System.out.println("CREATE_TASK");
