@@ -60,7 +60,7 @@ public class InMemoryTaskManager implements TaskManager {
         subTasks.put(id, newSubTask);
 
         Epic epic = epics.getOrDefault(newSubTask.getEpicId(), null);
-        if (epic == null){
+        if (epic == null) {
             throw new IOException("Эпик с id: " + newSubTask.getEpicId() + " не найден");
         }
 
@@ -76,7 +76,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int createEpic(Epic newEpic) throws IOException {
         if (newEpic == null) {
-             System.out.println("Ошибка, задачи не существует");
+            System.out.println("Ошибка, задачи не существует");
             return -1;
         }
         int id = idGenerator();
@@ -210,15 +210,14 @@ public class InMemoryTaskManager implements TaskManager {
     public List<SubTask> getEpicSubTasks(int epicId) {
         List<Integer> subTaskIds = epics.get(epicId).getSubTaskIds();
 
-        return new ArrayList<>(subTaskIds.stream()
+        return subTaskIds.stream()
                 .map(subTasks::get)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
 
     }
 
     @Override
     public Task getTaskById(int id) {
-//        TODO добавить Optional
         Task task = tasks.getOrDefault(id, null);
         if (task != null) {
             historyManager.add(task);
@@ -281,7 +280,7 @@ public class InMemoryTaskManager implements TaskManager {
         historyManager.remove(epicId);
     }
 
-    public void clearAllTasks(){
+    public void clearAllTasks() {
         tasks.clear();
         subTasks.clear();
         epics.clear();

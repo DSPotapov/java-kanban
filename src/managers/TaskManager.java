@@ -48,4 +48,6 @@ public interface TaskManager {
     void clearAllTasks();
 
     void updateEpic(Epic epic) throws IOException;
+
+    List<Task> getPrioritizedTasks();
 }
