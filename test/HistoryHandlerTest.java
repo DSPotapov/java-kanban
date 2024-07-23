@@ -1,4 +1,5 @@
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import components.Epic;
 import components.SubTask;
 import components.Task;
@@ -14,6 +15,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -105,7 +107,16 @@ public class HistoryHandlerTest {
         // проверяем код ответа
         assertEquals(200, response.statusCode());
 
-        System.out.println("response = " + response.body());
-        assertEquals(manager.getHistory(), gson.fromJson(response.body(), Task.class));
+        List<Task> taskHistory = gson.fromJson(response.body(), new TaskListTypeToken().getType());
+        Task responseEpic = taskHistory.get(0);
+        System.out.println("responseEpic = " + responseEpic);
+        assertEquals(1, taskHistory.size());
+        assertEquals(epic.getId(), responseEpic.getId(), "Задачи не совпадают");
+        assertEquals(epic.getName(), responseEpic.getName(), "Задачи не совпадают");
+        assertEquals(epic.getDescription(), responseEpic.getDescription(), "Задачи не совпадают");
+    }
+
+    static class TaskListTypeToken extends TypeToken<List<Task>> {
+
     }
 }

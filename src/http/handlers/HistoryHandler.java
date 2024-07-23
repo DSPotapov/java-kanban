@@ -22,9 +22,7 @@ public class HistoryHandler extends BaseHttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         String requestMethod =  exchange.getRequestMethod();
         if (requestMethod.equalsIgnoreCase("GET")){
-        //TODO вернуть историю обращений
             List<Task> history = manager.getHistory();
-            System.out.println("history.toString() = " + history.toString());
             sendText(exchange, gson.toJson(history));
         } else {
             sendNotFound(exchange, "Проверьте корректность запроса.");
