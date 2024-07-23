@@ -52,7 +52,7 @@ public class BaseHttpHandler implements HttpHandler {
 
         h.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
         h.sendResponseHeaders(responseCode, 0);
-        h.getResponseBody().write("Задача пересекается с другой".getBytes(StandardCharsets.UTF_8));
+        h.getResponseBody().write("Р—Р°РґР°С‡Р° РїРµСЂРµСЃРµРєР°РµС‚СЃСЏ СЃ РґСЂСѓРіРѕР№".getBytes(StandardCharsets.UTF_8));
         h.close();
     }
 
