@@ -116,7 +116,7 @@ public class TaskHandler extends BaseHttpHandler {
         Task task = null;
         try {
             task = gson.fromJson(body, Task.class);
-        } catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Сериализация Task сломалась " + e.getClass() + e.getMessage());
         }
         return task;
