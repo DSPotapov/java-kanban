@@ -20,8 +20,8 @@ public class HistoryHandler extends BaseHttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        String requestMethod =  exchange.getRequestMethod();
-        if (requestMethod.equalsIgnoreCase("GET")){
+        String requestMethod = exchange.getRequestMethod();
+        if (requestMethod.equalsIgnoreCase("GET")) {
             List<Task> history = manager.getHistory();
             sendText(exchange, gson.toJson(history));
         } else {

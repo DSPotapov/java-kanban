@@ -52,7 +52,7 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    public void removeNodeTest(){
+    public void removeNodeTest() {
         Task task = new Task("Task for test", "Task testing", 1);
         Task task1 = new Task("Task1 for test", "Task1 testing", 2);
         Task task2 = new Task("Task2 for test", "Task2 testing", 3);

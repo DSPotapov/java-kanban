@@ -6,7 +6,6 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.time.format.DateTimeFormatter;
 
 public class DurationAdapter extends TypeAdapter<Duration> {
     @Override
@@ -16,7 +15,7 @@ public class DurationAdapter extends TypeAdapter<Duration> {
 
     @Override
     public Duration read(JsonReader jsonReader) throws IOException {
-        Long minutes = Long.parseLong(jsonReader.nextString());
+        long minutes = Long.parseLong(jsonReader.nextString());
         return Duration.ofMinutes(minutes);
     }
 }

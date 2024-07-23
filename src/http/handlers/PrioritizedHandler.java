@@ -18,8 +18,8 @@ public class PrioritizedHandler extends BaseHttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        String requestMethod =  exchange.getRequestMethod();
-        if (requestMethod.equalsIgnoreCase("GET")){
+        String requestMethod = exchange.getRequestMethod();
+        if (requestMethod.equalsIgnoreCase("GET")) {
             List<Task> prioritizedTasks = manager.getPrioritizedTasks();
             sendText(exchange, gson.toJson(prioritizedTasks));
         } else {

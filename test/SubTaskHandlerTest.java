@@ -68,7 +68,7 @@ public class SubTaskHandlerTest {
         // проверяем код ответа
         assertEquals(200, response.statusCode());
 
-        SubTask subTask = new SubTask("Test 2", "Testing subtask 2", 2,1);
+        SubTask subTask = new SubTask("Test 2", "Testing subtask 2", 2, 1);
         // конвертируем её в JSON
         taskJson = gson.toJson(subTask);
         System.out.println("taskJson = " + taskJson);
