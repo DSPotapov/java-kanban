@@ -11,9 +11,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 public class TaskHandler extends BaseHttpHandler {
-    enum Endpoint {
-        GET_TASKS, GET_TASK_BY_ID, CREATE_TASK, UPDATE_TASK, DELETE_TASK, UNKNOWN
-    }
 
     Gson gson = HttpTaskServer.getGson();
 

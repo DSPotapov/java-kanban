@@ -15,10 +15,6 @@ public class SubTaskHandler extends BaseHttpHandler {
         super(manager);
     }
 
-    enum Endpoint {
-        GET_SUBTASKS, GET_SUBTASK_BY_ID, CREATE_SUBTASK, UPDATE_SUBTASK, DELETE_SUBTASK, GET_EPIC, UNKNOWN
-    }
-
     Gson gson = HttpTaskServer.getGson();
 
     @Override

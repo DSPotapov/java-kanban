@@ -11,9 +11,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 public class EpicHandler extends BaseHttpHandler {
-    enum Endpoint {
-        GET_EPICS, GET_EPIC_BY_ID, CREATE_EPIC, UPDATE_EPIC, DELETE_EPIC, GET_EPIC_SUBTASKS, UNKNOWN
-    }
 
     Gson gson = HttpTaskServer.getGson();
 
