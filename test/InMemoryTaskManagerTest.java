@@ -7,6 +7,7 @@ import managers.TaskManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.Duration;
 import java.util.List;
@@ -25,9 +26,9 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void addNewTaskTest() {
+    void addNewTaskTest() throws IOException {
         Task task = new Task("Test addNewTask", "Test addNewTask description");
-        final int taskId = taskManager.addNewTask(task);
+        final int taskId = taskManager.createTask(task);
         final Task savedTask = taskManager.getTaskById(taskId);
 
         assertNotNull(savedTask, "Задача не найдена.");
@@ -41,16 +42,16 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void addNewSubTaskTest() {
+    void addNewSubTaskTest() throws IOException {
         Epic epic = new Epic(
                 "Test addNewEpic",
                 "Test addNewEpic description");
-        taskManager.addNewEpic(epic);
+        taskManager.createEpic(epic);
         SubTask subTask = new SubTask(
                 "Test addNewSubTask",
                 "Test addNewSubTask description",
                 epic.getId());
-        final int taskId = taskManager.addNewSubTask(subTask);
+        final int taskId = taskManager.createSubTask(subTask);
         final Task savedTask = taskManager.getSubTaskById(taskId);
 
         assertNotNull(savedTask, "Задача не найдена.");
@@ -64,9 +65,9 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void addNewEpicTest() {
+    public void addNewEpicTest() throws IOException {
         Epic epic = new Epic("Test addNewEpic", "Test addNewEpic description");
-        final int taskId = taskManager.addNewEpic(epic);
+        final int taskId = taskManager.createEpic(epic);
         final Epic savedTask = taskManager.getEpicById(taskId);
 
         assertNotNull(savedTask, "Задача не найдена.");
@@ -80,9 +81,9 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void updateTaskTest() {
+    public void updateTaskTest() throws IOException {
         Task task = new Task("task for updateTaskTest", "testing task for updateTaskTest");
-        taskManager.addNewTask(task);
+        taskManager.createTask(task);
         int id = task.getId();
         task.setDescription("new description of the task");
         task.setName("new name of the task");
@@ -93,26 +94,26 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void taskShouldNotBeNull() {
-        assertEquals(-1, taskManager.addNewTask(null), "Пустая задача не может быть добавлена");
+    public void taskShouldNotBeNull() throws IOException {
+        assertEquals(-1, taskManager.createTask(null), "Пустая задача не может быть добавлена");
     }
 
     @Test
-    public void subTaskShouldNotBeNull() {
-        assertEquals(-1, taskManager.addNewSubTask(null), "Пустая задача не может быть добавлена");
+    public void subTaskShouldNotBeNull() throws IOException {
+        assertEquals(-1, taskManager.createSubTask(null), "Пустая задача не может быть добавлена");
     }
 
     @Test
-    public void epicShouldNotBeNull() {
-        assertEquals(-1, taskManager.addNewEpic(null), "Пустая задача не может быть добавлена");
+    public void epicShouldNotBeNull() throws IOException {
+        assertEquals(-1, taskManager.createEpic(null), "Пустая задача не может быть добавлена");
     }
 
     @Test
-    public void shouldAddAndDeleteSubTask() {
+    public void shouldAddAndDeleteSubTask() throws IOException {
         Epic epic = new Epic("epic for test", "testing epic");
-        taskManager.addNewEpic(epic);
+        taskManager.createEpic(epic);
         SubTask subTask = new SubTask("subtask for epic", "testing subtask", epic.getId());
-        taskManager.addNewSubTask(subTask);
+        taskManager.createSubTask(subTask);
         int id = subTask.getId();
         assertTrue(epic.isSubTaskId(id));
         taskManager.deleteSubTask(id);
@@ -120,18 +121,18 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void checkoutEpicStatusTest() {
+    public void checkoutEpicStatusTest() throws IOException {
         LocalDateTime startTime = LocalDateTime.now();
         Epic epic = new Epic("epic for test", "testing epic", 1);
-        taskManager.addNewEpic(epic);
+        taskManager.createEpic(epic);
         SubTask subTask = new SubTask("subtask0 for epic", "testing subtask0", 10, startTime, epic.getId());
         startTime = startTime.plusSeconds(3600);
         SubTask subTask1 = new SubTask("subtask1 for epic", "testing subtask1", 11, startTime, epic.getId());
         startTime = startTime.plusSeconds(3600);
         SubTask subTask2 = new SubTask("subtask2 for epic", "testing subtask2", 12, startTime, epic.getId());
-        taskManager.addNewSubTask(subTask);
-        taskManager.addNewSubTask(subTask1);
-        taskManager.addNewSubTask(subTask2);
+        taskManager.createSubTask(subTask);
+        taskManager.createSubTask(subTask1);
+        taskManager.createSubTask(subTask2);
         assertEquals(TaskStatus.NEW, epic.getTaskStatus());
 
         subTask1.setTaskStatus(TaskStatus.IN_PROGRESS);

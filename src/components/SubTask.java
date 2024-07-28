@@ -10,35 +10,28 @@ public class SubTask extends Task {
     }
 
     private int epicId = -1;
+    private LocalDateTime endTime;
 
     public SubTask(String name, String description, int epicId) {
         super(name, description);
         this.epicId = epicId;
         this.taskType = TaskType.SUBTASK;
+        endTime = startTime.plus(duration);
     }
 
     public SubTask(String name, String description, int id, int epicId) {
-        super(name, description, id);
-        this.epicId = epicId;
-        this.taskType = TaskType.SUBTASK;
+        this(name, description, epicId);
+        this.id = id;
     }
 
     public SubTask(String name, String description, int id, LocalDateTime startTime, int epicId) {
-        super(name, description, id, startTime);
-        this.epicId = epicId;
-        this.taskType = TaskType.SUBTASK;
+        this(name, description, id, epicId);
+        this.startTime = startTime;
     }
 
-    public SubTask(String name, String description, LocalDateTime startTime, int epicId) {
-        super(name, description, startTime);
-        this.epicId = epicId;
-        this.taskType = TaskType.SUBTASK;
-    }
-
-    public SubTask(String name, String description, LocalDateTime startTime, Duration duration, int epicId) {
-        super(name, description, startTime, duration);
-        this.epicId = epicId;
-        this.taskType = TaskType.SUBTASK;
+    public SubTask(String name, String description, int id, LocalDateTime startTime, Duration duration, int epicId) {
+        this(name, description, id, startTime, epicId);
+        this.duration = duration;
     }
 
     public int getEpicId() {

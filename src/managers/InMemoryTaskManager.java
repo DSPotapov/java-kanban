@@ -5,6 +5,7 @@ import components.SubTask;
 import components.Task;
 import components.TaskStatus;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -24,7 +25,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public int addNewTask(Task newTask) {
+    public int createTask(Task newTask) throws IOException {
 
         if (getPrioritizedTasks().stream().anyMatch(task -> checkTimeInterception(newTask, task))) {
             System.out.println("Время выполнения задачи пересекается с ранее созданной");
@@ -42,7 +43,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public int addNewSubTask(SubTask newSubTask) {
+    public int createSubTask(SubTask newSubTask) throws IOException {
 
         if (getPrioritizedTasks().stream().anyMatch(task -> checkTimeInterception(newSubTask, task))) {
             System.out.println("Время выполнения задачи пересекается с ранее созданной");
@@ -57,7 +58,12 @@ public class InMemoryTaskManager implements TaskManager {
         int id = idGenerator();
         newSubTask.setId(id);
         subTasks.put(id, newSubTask);
-        Epic epic = epics.get(newSubTask.getEpicId());
+
+        Epic epic = epics.getOrDefault(newSubTask.getEpicId(), null);
+        if (epic == null) {
+            throw new IOException("Эпик с id: " + newSubTask.getEpicId() + " не найден");
+        }
+
         epic.addSubTaskId(id);
         if (TaskStatus.DONE.equals(epic.getTaskStatus())) {
             epic.setTaskStatus(TaskStatus.NEW);
@@ -68,7 +74,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public int addNewEpic(Epic newEpic) {
+    public int createEpic(Epic newEpic) throws IOException {
         if (newEpic == null) {
             System.out.println("Ошибка, задачи не существует");
             return -1;
@@ -80,12 +86,17 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTask(Task task) {
+    public void updateTask(Task task) throws IOException {
         tasks.put(task.getId(), task);
     }
 
     @Override
-    public void updateSubTask(SubTask subTask) {
+    public void updateEpic(Epic epic) throws IOException {
+        epics.put(epic.getId(), epic);
+    }
+
+    @Override
+    public void updateSubTask(SubTask subTask) throws IOException {
         subTasks.put(subTask.getId(), subTask);
         int epicId = subTask.getEpicId();
         checkoutEpicStatus(epicId);
@@ -199,9 +210,9 @@ public class InMemoryTaskManager implements TaskManager {
     public List<SubTask> getEpicSubTasks(int epicId) {
         List<Integer> subTaskIds = epics.get(epicId).getSubTaskIds();
 
-        return new ArrayList<>(subTaskIds.stream()
+        return subTaskIds.stream()
                 .map(subTasks::get)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
 
     }
 
@@ -237,13 +248,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteTask(int taskId) {
+    public void deleteTask(int taskId) throws IOException {
         tasks.remove(taskId);
         historyManager.remove(taskId);
     }
 
     @Override
-    public void deleteSubTask(int subTaskId) {
+    public void deleteSubTask(int subTaskId) throws IOException {
         SubTask subTask = subTasks.get(subTaskId);
         int epicId = subTask.getEpicId();
         Epic epic = epics.get(epicId);
@@ -258,7 +269,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteEpic(int epicId) {
+    public void deleteEpic(int epicId) throws IOException {
         Epic epic = epics.get(epicId);
         List<Integer> subTaskIds = epic.getSubTaskIds();
         for (int id : subTaskIds) {
@@ -267,6 +278,13 @@ public class InMemoryTaskManager implements TaskManager {
         }
         epics.remove(epicId);
         historyManager.remove(epicId);
+    }
+
+    public void clearAllTasks() {
+        tasks.clear();
+        subTasks.clear();
+        epics.clear();
+        taskId = 1;
     }
 
 }
